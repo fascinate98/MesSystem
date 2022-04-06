@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+        <variable
+            name="activity"
+            type="com.returnz3ro.messystem.view.LoginActivity" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".2"/>
+
+        <ImageView
+            android:id="@+id/topcolor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            android:background="#5E9DF2"/>
+
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieView"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline"
+            app:lottie_rawRes="@raw/login_bg"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loginlottieView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitCenter"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="50dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/input_id_lay"
+            app:lottie_rawRes="@raw/login_logo"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="WELCOME"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginlottieView"
+            app:layout_constraintBottom_toTopOf="@id/input_id_lay"
+            android:fontFamily="@font/nanum_square_round_eb"
+            android:textSize="30dp"
+            android:textColor="@color/zblue"
+            android:gravity="center"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_id_lay"
+            app:counterMaxLength="10"
+            style="@style/OutlinedRoundedBox"
+            android:theme="@style/ThemeOverlay.TextInputLayout.TextView"
+            app:startIconDrawable="@drawable/login_input_id_icon"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lottieView"
+            app:hintTextColor="@color/zblue"
+            app:hintAnimationEnabled="true"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_l"
+                android:singleLine="true"
+                android:hint="사번" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_pw_lay"
+            style="@style/OutlinedRoundedBox"
+            android:theme="@style/ThemeOverlay.TextInputLayout.TextView"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/login_input_pw_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_id_lay"
+            app:hintTextColor="@color/zblue"
+            app:hintAnimationEnabled="true"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_pw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:fontFamily="@font/nanum_square_round_l"
+                android:hint="비밀번호" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_btn"
+            style="@style/OutlinedRoundedButton"
+            android:layout_width="240dp"
+            android:layout_height="48dp"
+            android:text="LOGIN"
+            android:layout_marginTop="30dp"
+            android:insetBottom="0dp"
+            android:insetTop="0dp"
+            android:textSize="16sp"
+            android:backgroundTint="@color/zblue"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_round_eb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_pw_lay"
+            app:strokeWidth="0dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/bottomlottieView"
+            android:layout_width="0dp"
+            android:layout_height="230dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:lottie_rawRes="@raw/login_bottom"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
