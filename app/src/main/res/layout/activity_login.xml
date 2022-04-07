@@ -4,7 +4,7 @@
 
         <variable
             name="activity"
-            type="com.returnz3ro.messystem.view.LoginActivity" />
+            type="com.returnz3ro.messystem.view.ui.LoginActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

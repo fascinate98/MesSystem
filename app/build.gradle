@@ -48,7 +48,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-
+    compileOnly 'com.squareup.okhttp3:okhttp:3.4.1'
+    compileOnly 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
