@@ -8,8 +8,11 @@
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1905" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/login_input.xml" value="0.131" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/login_input_id_icon.xml" value="0.131" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/main_menu_icon.xml" value="0.197" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/font/font.xml" value="0.30856901646264245" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_login.xml" value="0.18" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_main.xml" value="0.16" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/item_list.xml" value="0.22" />
       </map>
     </option>
   </component>
