@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity(), LoginActivityCallback {
     }
 
     private fun observeLogin(email: String, password: String){
-        loginViewModel?.loginUser(email, password)?.observe(this, Observer { loginUser->
+        loginViewModel?.loginRepository(email, password)?.observe(this, Observer { loginUser->
             if(loginUser!=null){
                 val mainIntent=Intent(this, MainActivity::class.java)
                 startActivity(mainIntent)

@@ -1,4 +1,4 @@
-package com.returnz3ro.messystem.model
+package com.returnz3ro.messystem.service.model
 
 import com.google.gson.annotations.SerializedName
 import lombok.Data
