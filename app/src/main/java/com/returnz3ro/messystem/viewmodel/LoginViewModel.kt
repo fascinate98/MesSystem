@@ -1,46 +1,38 @@
 package com.returnz3ro.messystem.viewmodel
 
-import android.widget.Toast
+import android.content.Context
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.returnz3ro.messystem.model.User
-import android.util.Log
+import androidx.lifecycle.ViewModelProvider
+import com.returnz3ro.messystem.model.LoginResPonse
 import com.returnz3ro.messystem.retrofit.RetrofitClient
+import com.returnz3ro.messystem.service.LoginService
 import org.json.JSONObject
-import retrofit2.Callback
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
-    var userLiveData: MutableLiveData<User>? = null
 
-    fun loginUser(email: String, password: String) : LiveData<User>? {
-        val call = RetrofitClient.apiInterface.LoginService()
+class LoginViewModel(val context: Context) : ViewModel() {
 
-        call.enqueue(object: Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                // TODO("Not yet implemented")
-                Log.v("DEBUG : ", t.message.toString())
-            }
 
-            override fun onResponse(
-                call: Call<User>,
-                response: Response<User>
-            ) {
-                if (response.code() == 200) {
+    fun loginUser(id: String, password: String): LiveData<LoginResPonse>{
+        return LoginService.getInstance(context).login(id, password)
+    }
 
-                } else {
-                    try {
-                        val jObjError =
-                            JSONObject(response.errorBody()!!.string())
-                    } catch (e: Exception) {
 
-                    }
-                }
-            }
-        })
+    override fun onCleared() {
+        super.onCleared()
+    }
 
-        return userLiveData
+    class Factory(val context: Context) : ViewModelProvider.NewInstanceFactory() {
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+            return LoginViewModel(context) as T
+        }
     }
 }

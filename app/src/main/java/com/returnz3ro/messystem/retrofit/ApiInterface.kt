@@ -1,6 +1,9 @@
 package com.returnz3ro.messystem.retrofit
 
-import com.returnz3ro.messystem.model.User
+import com.returnz3ro.messystem.model.Joborder
+
+import com.returnz3ro.messystem.model.LoginResPonse
+
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.Call
@@ -12,6 +15,9 @@ interface ApiInterface {
 
     @Headers("Content-Type:application/json")
     @POST("auth_tokens")
-    fun LoginService() : Call<User>
+    fun LoginService() : Call<LoginResPonse>
 
+    @Headers("Content-Type:application/json")
+    @POST("getAllJoborderData")
+    fun GetAllData() : Call<Joborder>
 }

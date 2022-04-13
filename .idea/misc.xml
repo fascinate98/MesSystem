@@ -6,13 +6,16 @@
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1905" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/custom_login_background.xml" value="0.1955" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1905" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/ic_main_list_arrow.xml" value="0.2525" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/ic_main_status.xml" value="0.2285" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/login_input.xml" value="0.131" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/login_input_id_icon.xml" value="0.131" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/main_menu_icon.xml" value="0.197" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/font/font.xml" value="0.30856901646264245" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_login.xml" value="0.2" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_main.xml" value="0.16" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/item_list.xml" value="0.22" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_recogqr.xml" value="0.1" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/item_list.xml" value="0.25" />
       </map>
     </option>
   </component>

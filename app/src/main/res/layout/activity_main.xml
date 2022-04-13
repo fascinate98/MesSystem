@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="activity"
+            type="com.returnz3ro.messystem.view.ui.MainActivity" />
+    </data>
+
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,11 +14,11 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/zlightgray"
     android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -38,7 +46,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_gravity="center_vertical"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/main_menu_icon"
+                    app:srcCompat="@drawable/ic_main_menu"
                     app:tint="@color/zgray" />
 
                 <TextView
@@ -65,7 +73,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/main_qr_icon"
+                    app:srcCompat="@drawable/ic_main_qr"
                     app:tint="@color/zgray" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -75,10 +83,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-
             android:paddingTop="20dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_list" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

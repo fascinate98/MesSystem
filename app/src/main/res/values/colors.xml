@@ -13,6 +13,7 @@
     <color name="zblue">#4D99FF</color>
     <color name="zbabyblue">#abcfff</color>
     <color name="zlightblue">#deecff</color>
+    <color name="zlightgray">#999999</color>
     <color name="zred">#FF4D4D</color>
-
+    <color name="zgreen">#70C65D</color>
 </resources>

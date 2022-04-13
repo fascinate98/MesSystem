@@ -8,23 +8,24 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
+    android:background="@color/zlightgray"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/zlightblue"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="6dp"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
         tools:layout_marginLeft="20dp"
         tools:layout_marginRight="20dp">
 
-        <FrameLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/card_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -34,218 +35,122 @@ too. layout_gravity="center_horizontal" is a lot simpler.
             animation happens. card_container re-sizes height and width while
             scale_container scales the inside views to make it look natural
             -->
-
             <RelativeLayout
                 android:id="@+id/scale_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="16dp"
-                android:paddingTop="@dimen/list_item_vertical_padding"
+                android:paddingTop="20dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="@dimen/list_item_vertical_padding"
+                android:paddingBottom="20dp"
                 android:transformPivotX="0dp">
 
                 <ImageView
-                    android:id="@+id/chevron"
+                    android:id="@+id/arrow_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/title"
                     android:layout_alignBottom="@+id/subtitle1"
                     android:layout_marginEnd="16dp"
-                    android:tint="@color/title_color"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    app:srcCompat="@drawable/ic_main_list_arrow"
+                    app:tint="@color/zbabyblue" />
 
-                <View
+                <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_toEndOf="@id/chevron"
-                    android:background="@drawable/ic_pill"
-                    android:backgroundTint="@color/title_color" />
+                    android:layout_height="wrap_content"
+                    android:text="JOBORDER_ABC123"
+                    android:layout_toEndOf="@id/arrow_icon" />
 
-                <View
+                <TextView
                     android:id="@+id/subtitle1"
-                    android:layout_width="100dp"
-                    android:layout_height="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/title"
                     android:layout_marginTop="8dp"
-                    android:layout_toEndOf="@id/chevron"
-                    android:background="@drawable/ic_pill"
-                    android:backgroundTint="@color/subtitle_color" />
+                    android:layout_toEndOf="@id/arrow_icon"
+                    android:text="COIL_1234_4567_AB"
+                    android:textSize="10dp" />
 
-                <View
+                <ImageView
                     android:id="@+id/subtitle2"
-                    android:layout_width="85dp"
-                    android:layout_height="10dp"
-                    android:layout_below="@id/title"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_toEndOf="@id/subtitle1"
-                    android:background="@drawable/ic_pill"
-                    android:backgroundTint="@color/subtitle_color" />
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/title"
+                    android:layout_alignBottom="@id/subtitle1"
+                    android:layout_alignParentRight="true"
+                    android:text="작업중"
+                    android:textSize="10dp"
+                    app:srcCompat="@drawable/ic_main_status"
+                    app:tint="@color/zblue" />
 
                 <LinearLayout
                     android:id="@+id/expand_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/subtitle2"
-                    android:layout_alignStart="@id/title"
-                    android:layout_marginTop="36dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_alignStart="@id/arrow_icon"
+                    android:layout_marginTop="30dp"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    tools:visibility="gone">
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#E7F7F7"
+                        android:background="#aaa"
                         android:orientation="horizontal"
                         android:padding="14dp">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/title_color"
-                            android:transformPivotX="0dp" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="0.8" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1.5"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/subtitle_color" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#0000"
+                        android:background="#abc"
                         android:orientation="horizontal"
                         android:padding="14dp">
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/title_color" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="0.8" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1.5"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/subtitle_color" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#E7F7F7"
+                        android:background="#aaa"
                         android:orientation="horizontal"
                         android:padding="14dp">
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/title_color" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="0.8" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1.5"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/subtitle_color" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#0000"
+                        android:background="#abc"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#aaa"
                         android:orientation="horizontal"
                         android:padding="14dp">
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/title_color" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="0.8" />
+                            />
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_SPList"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="30dp"
+                            android:spinnerMode="dropdown"
+                            android:popupBackground="#2540FF"/>
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1.5"
-                            android:background="@drawable/ic_pill"
-                            android:backgroundTint="@color/subtitle_color" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
-
-            <View
-                android:id="@+id/list_item_fg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0"
-                android:background="@color/list_item_fg"
-                android:visibility="visible"
-                tools:visibility="gone" />
-        </FrameLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

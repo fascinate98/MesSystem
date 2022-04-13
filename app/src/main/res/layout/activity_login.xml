@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="activity"
-            type="com.returnz3ro.messystem.view.ui.LoginActivity" />
+            name="loginActivityCallback"
+            type="com.returnz3ro.messystem.view.callback.LoginActivityCallback" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,7 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/guideline"
             android:background="#5E9DF2"/>
-
 
 
         <com.airbnb.lottie.LottieAnimationView
@@ -74,7 +73,7 @@
             app:counterMaxLength="10"
             style="@style/OutlinedRoundedBox"
             android:theme="@style/ThemeOverlay.TextInputLayout.TextView"
-            app:startIconDrawable="@drawable/login_input_id_icon"
+            app:startIconDrawable="@drawable/ic_login_input_id"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
@@ -102,7 +101,7 @@
             android:theme="@style/ThemeOverlay.TextInputLayout.TextView"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            app:startIconDrawable="@drawable/login_input_pw_icon"
+            app:startIconDrawable="@drawable/ic_login_input_pw"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_id_lay"
@@ -116,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:fontFamily="@font/nanum_square_round_l"
+                android:inputType="textPassword"
                 android:hint="비밀번호" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +136,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_pw_lay"
-            app:strokeWidth="0dp" />
+            app:strokeWidth="0dp"
+            android:onClick="@{(theView) -> loginActivityCallback.onLoginClick(theView)}"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/bottomlottieView"
