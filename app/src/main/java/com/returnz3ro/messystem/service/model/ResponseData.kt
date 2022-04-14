@@ -9,6 +9,7 @@ data class ResponseData (
         @SerializedName("result")
         var result: String,
         @SerializedName("data")
-        var data: Objects,
+        var user: User,
         @SerializedName("message")
-        var message: String)
+        var message: String
+        )

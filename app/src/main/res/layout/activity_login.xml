@@ -90,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_l"
                 android:singleLine="true"
+                android:text="981215"
                 android:hint="사번" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,6 +117,7 @@
                 android:singleLine="true"
                 android:fontFamily="@font/nanum_square_round_l"
                 android:inputType="textPassword"
+                android:text="0000"
                 android:hint="비밀번호" />
 
         </com.google.android.material.textfield.TextInputLayout>

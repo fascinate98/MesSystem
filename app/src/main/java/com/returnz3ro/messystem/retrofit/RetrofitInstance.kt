@@ -15,7 +15,7 @@ import javax.net.ssl.X509TrustManager
 
 class RetrofitInstance {
     companion object {
-        val BASE_URL: String = "https://192.168.0.54:8080/"
+        val BASE_URL: String = "http://192.168.0.54:8080/"
 
         fun getRetrofitInstance(): Retrofit {
             return Retrofit.Builder()

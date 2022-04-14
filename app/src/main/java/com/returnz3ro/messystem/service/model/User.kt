@@ -5,22 +5,14 @@ import lombok.Data
 
 @Data
 data class User (
-
     @SerializedName("userId")
-    val userId: Int? = null,
+    var userId: String? = null,
     @SerializedName("userPw")
-    val userPw: String? = null,
+    var userPw: String? = null,
     @SerializedName("userName")
-    val userName: String? = null,
+    var userName: String? = null,
     @SerializedName("userWorktype")
-    val userWorktype: String? = null,
+    var userWorktype: String? = null,
     @SerializedName("userGroup")
-    val userGroup: String? = null
-)
-
-data class UserRequest (
-    @SerializedName("userId")
-    val userId: Int? = null,
-    @SerializedName("userPw")
-    val userPw: String? = null
+    var userGroup: String? = null
 )

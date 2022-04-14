@@ -5,11 +5,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
 import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
 import com.returnz3ro.messystem.service.model.ResponseData
 import com.returnz3ro.messystem.service.model.User
-import com.returnz3ro.messystem.service.model.UserRequest
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,11 +31,15 @@ class UserRepository {
     fun login(userId: String, userPw: String): LiveData<User> {
         val loginData= MutableLiveData<User>()
         val apiInterface = RetrofitInstance.getRetrofitInstance()
-        val UserRequest =
-        Log.d(TAG,apiInterface. + "으애애ㅐㅐㅐㅐㅐㅐㅐ")
+        val jsonData: JsonObject = JsonObject().apply {
+            addProperty("userId", userId)
+            addProperty("userPw", userPw)
+        }
+
+        Log.d(TAG, jsonData.toString() + "으애애ㅐㅐㅐㅐㅐㅐㅐ")
         var loginService: ApiInterface = apiInterface.create(ApiInterface::class.java)
 
-        loginService.requestLogin(UserRequest(userId, userPw)).enqueue(object: Callback<ResponseData>{
+        loginService.requestLogin(jsonData).enqueue(object: Callback<ResponseData>{
             override fun onFailure(call: Call<ResponseData>, t: Throwable) {
                 //todo 실패처리
                 Log.d(TAG,t.toString() + "응애응애 실패야")
@@ -50,8 +54,8 @@ class UserRepository {
                 }
                 response.body()?.let{
                     //body가 있다면 그안에는 bestSellerDto가 들어있을것
-                    Log.d(TAG,"응애응애 성공이야")
-                    //loginData.postValue(response.body()!!.data)
+                    Log.d(TAG,it.user.toString() + "dfdfd")
+                    loginData.postValue(it.user)
                 }
             }
 

@@ -13,9 +13,9 @@
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/drawable/main_menu_icon.xml" value="0.197" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/font/font.xml" value="0.30856901646264245" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_login.xml" value="0.1" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/activity_recogqr.xml" value="0.1" />
-        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/item_list.xml" value="0.25" />
+        <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/layout/item_list.xml" value="0.1" />
         <entry key="..\:/Users/BIT/AndroidStudioProjects/MesSystem/app/src/main/res/xml/network_security_config.xml" value="0.17999144933732364" />
       </map>
     </option>
@@ -25,5 +25,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.16" />
+      </ProjectState>
+    </option>
   </component>
 </project>
