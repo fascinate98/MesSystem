@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
-import com.returnz3ro.messystem.service.model.ResponseData
+import com.returnz3ro.messystem.service.model.ResponseUserData
 import com.returnz3ro.messystem.service.model.User
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,13 +39,13 @@ class UserRepository {
         Log.d(TAG, jsonData.toString() + "으애애ㅐㅐㅐㅐㅐㅐㅐ")
         var loginService: ApiInterface = apiInterface.create(ApiInterface::class.java)
 
-        loginService.requestLogin(jsonData).enqueue(object: Callback<ResponseData>{
-            override fun onFailure(call: Call<ResponseData>, t: Throwable) {
+        loginService.requestLogin(jsonData).enqueue(object: Callback<ResponseUserData>{
+            override fun onFailure(call: Call<ResponseUserData>, t: Throwable) {
                 //todo 실패처리
                 Log.d(TAG,t.toString() + "응애응애 실패야")
             }
 
-            override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
+            override fun onResponse(call: Call<ResponseUserData>, response: Response<ResponseUserData>) {
                 //todo 성공처리
                 Log.d(TAG,"응애응애 성공이야222")
                 if(response.isSuccessful.not()){

@@ -1,5 +1,5 @@
 package com.returnz3ro.messystem.service.model
-
+import java.io.Serializable
 import com.google.gson.annotations.SerializedName
 import lombok.Data
 
@@ -15,4 +15,4 @@ data class User (
     var userWorktype: String? = null,
     @SerializedName("userGroup")
     var userGroup: String? = null
-)
+): Serializable

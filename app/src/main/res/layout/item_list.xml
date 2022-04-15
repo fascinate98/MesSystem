@@ -8,7 +8,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
-    android:background="@color/zbabyblue"
+    android:background="@color/zblue"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -117,14 +117,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="제품명 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="코일"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                         </LinearLayout>
 
@@ -139,14 +139,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="줄 수 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="3"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
                         </LinearLayout>
 
 
@@ -170,14 +170,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="원자재 폭 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10cm"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                         </LinearLayout>
 
@@ -192,14 +192,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="작업자 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="마사우"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="15dp"/>
+                                android:textSize="13dp"/>
                         </LinearLayout>
 
                     </LinearLayout>

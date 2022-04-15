@@ -12,7 +12,8 @@
     <color name="zgray">#6B000000</color>
     <color name="zblue">#4D99FF</color>
     <color name="zbabyblue">#abcfff</color>
-    <color name="zlightblue">#deecff</color>
+    <color name="zlightblue">#64A6FF</color>
+    <color name="zdarkblue">#1263CE</color>
     <color name="zlightgray">#999999</color>
     <color name="zred">#FF4D4D</color>
     <color name="zgreen">#70C65D</color>
