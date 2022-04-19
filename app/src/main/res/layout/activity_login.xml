@@ -117,7 +117,7 @@
                 android:singleLine="true"
                 android:fontFamily="@font/nanum_square_round_l"
                 android:inputType="textPassword"
-                android:text="0000"
+                android:text="1234"
                 android:hint="비밀번호" />
 
         </com.google.android.material.textfield.TextInputLayout>

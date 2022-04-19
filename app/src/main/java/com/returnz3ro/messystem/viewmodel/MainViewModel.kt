@@ -14,8 +14,10 @@ import com.returnz3ro.messystem.service.repository.UserRepository
 
 class MainViewModel(val context: Context) : ViewModel() {
 
-    fun getJoborderListService(): LiveData<List<Joborder>>?{
-        return JoborderRepository.getInstance(context).getJoborderList()}
+
+    fun getAllJoborders(): LiveData<List<Joborder>>?{
+        return JoborderRepository.getInstance(context).getJoborderList()
+    }
 
     override fun onCleared() {
         super.onCleared()

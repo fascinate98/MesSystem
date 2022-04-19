@@ -3,8 +3,17 @@ FrameLayout is used as top level layout because when the CardView is getting
 animated, it needs to stay centered. Otherwise we need to animate x and y values
 too. layout_gravity="center_horizontal" is a lot simpler.
 -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="joborder"
+            type="com.returnz3ro.messystem.service.model.Joborder"/>
+    </data>
+
 <FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
@@ -13,12 +22,13 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/zwhiteblue"
         app:cardCornerRadius="6dp"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
@@ -38,7 +48,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
             <RelativeLayout
                 android:id="@+id/scale_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/list_item_horizontal_padding"
                 android:paddingTop="@dimen/list_item_vertical_padding"
                 android:paddingRight="@dimen/list_item_horizontal_padding"
@@ -49,38 +59,38 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:id="@+id/chevron"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/title"
-                    android:layout_alignBottom="@+id/subtitle1"
+                    android:layout_alignTop="@+id/joborder_jobname"
+                    android:layout_alignBottom="@+id/material_prod_name"
                     android:layout_marginEnd="16dp"
                     app:srcCompat="@drawable/ic_main_list_arrow"
                     app:tint="@color/zbabyblue" />
 
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/joborder_jobname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/chevron"
                     android:fontFamily="@font/nanum_square_round_eb"
-                    android:text="JOBORDER_ABC123"
-                    android:textSize="17dp"/>
+                    android:text="@{joborder.joborderJobname}"
+                    android:textSize="15dp" />
 
                 <TextView
-                    android:id="@+id/subtitle1"
+                    android:id="@+id/material_prod_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/title"
+                    android:layout_below="@id/joborder_jobname"
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/chevron"
                     android:fontFamily="@font/nanum_square_round_b"
-                    android:text="COIL_1234_4567_AB"
-                    android:textSize="13dp" />
+                    android:text="@{joborder.materialProdName}"
+                    android:textSize="10dp" />
 
                 <ImageView
-                    android:id="@+id/subtitle2"
+                    android:id="@+id/status_icon"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/title"
-                    android:layout_alignBottom="@id/subtitle1"
+                    android:layout_alignTop="@+id/joborder_jobname"
+                    android:layout_alignBottom="@id/material_prod_name"
                     android:layout_alignParentRight="true"
                     android:text="작업중"
                     android:textSize="10dp"
@@ -91,13 +101,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:id="@+id/expand_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/subtitle2"
-                    android:layout_alignStart="@id/title"
+                    android:layout_below="@id/status_icon"
+                    android:layout_alignStart="@id/joborder_jobname"
                     android:layout_marginTop="30dp"
                     android:divider="@color/zlightgray"
                     android:dividerPadding="1dp"
                     android:showDividers="middle"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -115,41 +126,19 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="제품명 : "
+                                android:text="LOT NO : "
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:textSize="13dp"/>
 
                             <TextView
+                                android:id="@+id/material_lotno"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="코일"
+                                android:text="@{joborder.materialLotno}"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:textSize="13dp"/>
 
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="줄 수 : "
-                                android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="3"
-                                android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
-                        </LinearLayout>
-
-
 
                     </LinearLayout>
 
@@ -175,7 +164,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10cm"
+                                android:text="@{joborder.joborderWidth}"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:textSize="13dp"/>
 
@@ -190,15 +179,16 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="작업자 : "
+                                android:text="줄 수 : "
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:textSize="13dp"/>
 
                             <TextView
+                                android:id="@+id/joborder_line"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="마사우"
                                 android:fontFamily="@font/nanum_square_round_r"
+                                android:text="@{joborder.joborderLine}"
                                 android:textSize="13dp"/>
                         </LinearLayout>
 
@@ -251,3 +241,4 @@ too. layout_gravity="center_horizontal" is a lot simpler.
         </FrameLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>
+</layout>

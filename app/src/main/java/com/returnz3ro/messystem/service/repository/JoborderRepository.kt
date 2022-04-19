@@ -11,8 +11,6 @@ import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
 import com.returnz3ro.messystem.service.model.Joborder
 import com.returnz3ro.messystem.service.model.ResponseJoborderData
-import com.returnz3ro.messystem.service.model.ResponseUserData
-import com.returnz3ro.messystem.service.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,7 +33,7 @@ class JoborderRepository {
         val joborerData= MutableLiveData<List<Joborder>>()
         val apiInterface = RetrofitInstance.getRetrofitInstance()
 
-        Log.d(ContentValues.TAG, "으애애ㅐㅐㅐㅐㅐㅐㅐ")
+        Log.d(ContentValues.TAG, "으애애ㅐㅐㅐㅐㅐㅐㅐ123123")
         var getAllListService: ApiInterface = apiInterface.create(ApiInterface::class.java)
 
         getAllListService.requestGetAllList().enqueue(object: Callback<ResponseJoborderData> {
@@ -53,10 +51,8 @@ class JoborderRepository {
                 }
                 response.body()?.let{
                     //body가 있다면 그안에는 bestSellerDto가 들어있을것
-
                     it.joborders.forEach{ joborder->
-                        Log.d(TAG,joborder.toString())
-
+                        Log.d(TAG,joborder.toString() + "잡오더어어어ㅓ")
                     }
                     joborerData.postValue(it.joborders)
 

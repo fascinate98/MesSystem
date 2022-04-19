@@ -9,12 +9,14 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="ztextcolorgray">#ff605d62</color>
-    <color name="zgray">#6B000000</color>
+    <color name="zgray">#6B636363</color>
     <color name="zblue">#4D99FF</color>
     <color name="zbabyblue">#abcfff</color>
+    <color name="zwhiteblue">#E3EFFF</color>
     <color name="zlightblue">#64A6FF</color>
     <color name="zdarkblue">#1263CE</color>
     <color name="zlightgray">#999999</color>
     <color name="zred">#FF4D4D</color>
+    <color name="zemgred">#FFA5A5</color>
     <color name="zgreen">#70C65D</color>
 </resources>

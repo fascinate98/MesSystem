@@ -6,35 +6,43 @@ import lombok.Data
 @Data
 data class Joborder (
     // 작지명
-    @SerializedName("joborerJobname")
-    val joborerJobname: String? = null,
+    @SerializedName("joborderJobname")
+    var joborderJobname: String? = null,
 
     // 부모 품번
     @SerializedName("materialProdId")
-    val materialProbId: String? = null,
+    var materialProdId: String? = null,
 
     //부모이름
     @SerializedName("materialProdName")
-    val materialProbName: String? = null,
+    var materialProdName: String? = null,
+
+    //lotno
+    @SerializedName("materialLotno")
+    var materialLotno: String? = null,
 
     //줄수
-    @SerializedName("materialLine")
-    val materialLine: String? = null,
+    @SerializedName("joborderLine")
+    var joborderLine: String? = null,
+
+    //상태
+    @SerializedName("joborderStatus")
+    var joborderStatus: Int? = null,
 
     //작업자
     @SerializedName("joborderWorker")
-    val joborderWorker: String? = null,
+    var joborderWorker: String? = null,
 
     //깅금
-   @SerializedName("joborderEmergency")
-    val joborderEmergency: String? = null,
+   @SerializedName("joborderEmg")
+    var joborderEmg: Int? = null,
 
     //부모폭
-    @SerializedName("joborderBasicinfoWidth")
-    val joborderBasicinfoWidth: String? = null,
+    @SerializedName("joborderWidth")
+    var joborderWidth: String? = null,
 
     //설비번호
     @SerializedName("joborderSetEquipEquipId")
-    val joborderSetEquipEquipId: String? = null
+    var joborderSetEquipEquipId: String? = null
 
 )
