@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.returnz3ro.messystem.R
 import com.returnz3ro.messystem.databinding.ActivityLoginBinding
+import com.returnz3ro.messystem.retrofit.ApiInterface
+import com.returnz3ro.messystem.retrofit.RetrofitInstance
 import com.returnz3ro.messystem.service.model.User
 import com.returnz3ro.messystem.view.callback.LoginActivityCallback
 import com.returnz3ro.messystem.viewmodel.LoginViewModel
@@ -38,10 +40,12 @@ class LoginActivity : AppCompatActivity(), LoginActivityCallback {
     }
     override fun onLoginClick(view: View) {
         hideKeyboard()
+        RetrofitInstance.BASE_URL = activityLoginBinding?.ip?.text.toString()
         observeLogin(activityLoginBinding?.inputId?.text.toString(), activityLoginBinding?.inputPw?.text.toString())
     }
 
     private fun observeLogin(id: String, password: String){
+
         loginViewModel?.loginService(id, password)?.observe(this, Observer { loginUser->
             if(loginUser!=null){
                 val mainIntent=Intent(this, MainActivity::class.java)

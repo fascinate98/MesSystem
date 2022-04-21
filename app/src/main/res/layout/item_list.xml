@@ -17,7 +17,6 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
-    android:background="@color/zblue"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -26,14 +25,15 @@ too. layout_gravity="center_horizontal" is a lot simpler.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/zwhiteblue"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
         app:cardMaxElevation="0dp"
         tools:layout_marginLeft="20dp"
-        tools:layout_marginRight="20dp">
+        tools:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <FrameLayout
             android:id="@+id/card_container"
@@ -63,7 +63,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:layout_alignBottom="@+id/material_prod_name"
                     android:layout_marginEnd="16dp"
                     app:srcCompat="@drawable/ic_main_list_arrow"
-                    app:tint="@color/zbabyblue" />
+                    app:tint="@color/zdarkblue" />
 
                 <TextView
                     android:id="@+id/joborder_jobname"
@@ -72,7 +72,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:layout_toEndOf="@id/chevron"
                     android:fontFamily="@font/nanum_square_round_eb"
                     android:text="@{joborder.joborderJobname}"
-                    android:textSize="15dp" />
+                    android:textSize="13dp"
+                    android:textColor="@color/ztextcolorgray"/>
 
                 <TextView
                     android:id="@+id/material_prod_name"
@@ -83,7 +84,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:layout_toEndOf="@id/chevron"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@{joborder.materialProdName}"
-                    android:textSize="10dp" />
+                    android:textSize="10dp"
+                    android:textColor="@color/ztextcolorgray"/>
 
                 <ImageView
                     android:id="@+id/status_icon"
@@ -95,7 +97,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:text="작업중"
                     android:textSize="10dp"
                     app:srcCompat="@drawable/ic_main_status"
-                    app:tint="@color/zblue" />
+                    app:tint="@color/zblue"/>
 
                 <LinearLayout
                     android:id="@+id/expand_view"
@@ -108,7 +110,6 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:dividerPadding="1dp"
                     android:showDividers="middle"
                     android:orientation="vertical"
-                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -128,7 +129,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="LOT NO : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
 
                             <TextView
                                 android:id="@+id/material_lotno"
@@ -136,7 +138,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="@{joborder.materialLotno}"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
 
                         </LinearLayout>
 
@@ -159,14 +162,16 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="원자재 폭 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{joborder.joborderWidth}"
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
 
                         </LinearLayout>
 
@@ -181,7 +186,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:text="줄 수 : "
                                 android:fontFamily="@font/nanum_square_round_r"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
 
                             <TextView
                                 android:id="@+id/joborder_line"
@@ -189,7 +195,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:text="@{joborder.joborderLine}"
-                                android:textSize="13dp"/>
+                                android:textSize="13dp"
+                                android:textColor="@color/ztextcolorgray"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -210,7 +217,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:layout_height="40dp"
                             android:paddingRight="30dp"
                             android:spinnerMode="dropdown"
-                            android:popupBackground="#2540FF"/>
+                            android:popupBackground="#fff"/>
 
                         <View
                             android:layout_width="30dp"
@@ -218,14 +225,15 @@ too. layout_gravity="center_horizontal" is a lot simpler.
 
                         </View>
 
-
                         <Button
                             android:backgroundTint="@color/zblue"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:text="작업시작"
                             android:textSize="12dp"
-                            android:layout_height="40dp" />
+                            android:layout_height="40dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:textColor="@color/white"/>
 
                     </LinearLayout>
                 </LinearLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        tools:layout_gravity="start">
+
+        //메뉴
+        <LinearLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            tools:ignore="MissingConstraints">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/menu_bg"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/menu_user_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_left_menu_user"
+                    app:layout_constraintRight_toRightOf="@id/menu_bg"
+                    app:layout_constraintLeft_toLeftOf="@id/menu_bg"
+                    app:layout_constraintTop_toTopOf="@id/menu_bg"
+                    app:tint="@color/zblue"></ImageView>
+
+                <ImageView
+                    android:id="@+id/user_ico"
+                    android:layout_width="45dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ico_user"
+                    android:layout_marginTop="20dp"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="10dp"
+                    app:layout_constraintTop_toTopOf="@id/menu_user_bg"
+                    app:layout_constraintLeft_toLeftOf="@id/menu_user_bg"
+                    app:layout_constraintRight_toRightOf="@id/menu_user_bg"
+                    app:tint="@color/zbackgroungray"></ImageView>
+
+                <TextView
+                    android:id="@+id/membername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="홍길동"
+                    android:textSize="15sp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/zbackgroungray"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    app:layout_constraintLeft_toLeftOf="@id/menu_user_bg"
+                    app:layout_constraintRight_toRightOf="@id/menu_user_bg"
+                    app:layout_constraintTop_toBottomOf="@id/user_ico"
+                    app:layout_constraintBottom_toBottomOf="@id/menu_user_bg"></TextView>
+
+
+
+                <ImageView
+                    android:id="@+id/menu_setting_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:onClick="settingBtnOnclick"
+                    android:src="@drawable/bg_left_menu_list"
+                    app:layout_constraintTop_toBottomOf="@id/menu_user_bg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:tint="@color/zbackgroungray"></ImageView>
+
+
+                //로그아웃
+                <ImageView
+                    android:id="@+id/logout_setting_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:onClick="logoutBtnOnClick"
+                    android:src="@drawable/bg_left_menu_list"
+                    app:layout_constraintBottom_toBottomOf="@id/menu_setting_bg"
+                    app:tint="@color/zblue"></ImageView>
+
+                <ImageView
+                    android:id="@+id/logout_ico"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ico_logout"
+                    android:onClick="logoutBtnOnClick"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="15dp"
+                    app:layout_constraintTop_toTopOf="@id/logout_setting_bg"
+                    app:layout_constraintLeft_toLeftOf="@id/logout_setting_bg"
+                    app:layout_constraintBottom_toBottomOf="@id/logout_setting_bg"
+                    app:tint="@color/white"></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:onClick="logoutBtnOnClick"
+                    android:text="로그아웃"
+                    android:textSize="13sp"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintLeft_toRightOf="@id/logout_ico"
+                    app:layout_constraintTop_toTopOf="@id/logout_setting_bg"
+                    app:layout_constraintBottom_toBottomOf="@id/logout_setting_bg"></TextView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+</merge>

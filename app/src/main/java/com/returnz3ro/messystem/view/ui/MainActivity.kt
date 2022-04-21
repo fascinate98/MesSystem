@@ -4,19 +4,32 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Matrix
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
+import androidx.core.view.children
+import androidx.core.view.size
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.returnz3ro.messystem.R
 import com.returnz3ro.messystem.databinding.ActivityMainBinding
+import com.returnz3ro.messystem.utils.setScale
 import com.returnz3ro.messystem.view.adapter.JoborderAdapter
 import com.returnz3ro.messystem.viewmodel.MainViewModel
+import com.simform.refresh.SSPullToRefreshLayout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 var animationPlaybackSpeed: Double = 0.8
@@ -45,10 +58,6 @@ class MainActivity: AppCompatActivity() {
         // Appbar behavior init
         (binding.appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior = ToolbarBehavior()
 
-        binding.swipeContainer.setOnRefreshListener {
-            getJoborderList()
-            binding.swipeContainer.isRefreshing = false
-        }
 
         // RecyclerView Init
 
@@ -70,16 +79,32 @@ class MainActivity: AppCompatActivity() {
         }
 
         //logout click
-        binding.logoutSettingBg.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+//        binding.logoutSettingBg.setOnClickListener {
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
+//        }
 
-        // 스크롤 업 대신에 리프레쉬 이벤트가 트리거 되는걸 방지
-        binding.swipeContainer.setOnRefreshListener {
-            getJoborderList()
-        }
+        binding.swipeContainer.setOnRefreshListener(object : SSPullToRefreshLayout.OnRefreshListener {
+            override fun onRefresh() {
+                // This is demo code to perform
+                GlobalScope.launch {
+                    delay(1000)
+                    binding.swipeContainer.setRefreshing(false) // This line stops layout refreshing
 
+                    MainScope().launch {
+                        Toast.makeText(this@MainActivity,"Refresh Complete",Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+
+        binding.swipeContainer.setLottieAnimation("refresh.json")
+        binding.swipeContainer.setRefreshStyle(SSPullToRefreshLayout.RefreshStyle.NORMAL)
+        binding.swipeContainer.setRepeatMode(SSPullToRefreshLayout.RepeatMode.REPEAT)
+        binding.swipeContainer.setRepeatCount(SSPullToRefreshLayout.RepeatCount.INFINITE)
+        binding.swipeContainer.setRefreshViewParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300))
+        binding.swipeContainer.clipToOutline = true
+        binding.recyclerView.clipToOutline = true
 
         //뒤로 가기 버튼 2번 클릭시 종료
         backPressCloseHandler= BackPressCloseHandler(this)
@@ -103,14 +128,14 @@ class MainActivity: AppCompatActivity() {
             if(joborderList!=null){
                 adapter.setJoborderlist(joborderList)
                 Log.d(ContentValues.TAG, joborderList.get(1).joborderJobname + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
-
+                binding.swipeContainer.setRefreshing(false)
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }
 
         })
 
-        binding.swipeContainer.isRefreshing = false
+        binding.swipeContainer.setRefreshing(false)
     }
 
     //Update RecyclerView Item Animation Durations

@@ -26,7 +26,8 @@ import okhttp3.internal.toImmutableList
 
 class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>(){
 
-    //private val originalBg: Int by bindColor(context, R.color.zwhiteblue)
+    private val originalBg: Int by bindColor(context, R.color.white)
+    private val emergencyBg: Int by bindColor(context, R.color.zemgred)
     private val expandedBg: Int by bindColor(context, R.color.white)
 
     private val listItemHorizontalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
@@ -40,6 +41,7 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     private lateinit var recyclerView: RecyclerView
     private var expandedModel: Joborder? = null
     private var isScaledDown = false
+    private var joborderData : Joborder? = null
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -72,12 +74,17 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val joborder = joborders[position]
         holder.binding.joborder = joborder
+        joborderData = joborder
 
-        if(joborder.joborderStatus == 1 || joborder.joborderStatus == 2)
-            holder.binding.statusIcon.setColorFilter(R.color.zgray)
-
-        if(joborder.joborderEmg == 0)
-
+        //작업전
+//        if(joborder.joborderStatus == 0)
+//            holder.binding.statusIcon.setColorFilter(R.color.zblue)
+        //작업중
+        if(joborder.joborderStatus == 0)
+            holder.binding.statusIcon.setColorFilter(R.color.zblue)
+        //작업완료
+        if(joborder.joborderStatus == 2)
+            holder.binding.statusIcon.setColorFilter(R.color.zgreen)
 
         expandItem(holder, joborder == expandedModel, animate = false)
         scaleDownItem(holder, position, isScaledDown)
@@ -157,7 +164,11 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
         holder.binding.cardContainer.layoutParams.width =
             (originalWidth + (expandedWidth - originalWidth) * progress).toInt()
 
-        //holder.binding.cardContainer.setBackgroundColor(blendColors(originalBg, expandedBg, progress))
+        if(joborderData?.joborderEmg == 0)
+            holder.binding.cardContainer.setBackgroundColor(blendColors(originalBg, expandedBg, progress))
+        else if(joborderData?.joborderEmg == 1)
+            holder.binding.cardContainer.setBackgroundColor(blendColors(emergencyBg, expandedBg, progress))
+
         holder.binding.cardContainer.requestLayout()
 
         holder.binding.chevron.rotation = 90 * progress

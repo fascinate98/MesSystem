@@ -15,11 +15,12 @@ import javax.net.ssl.X509TrustManager
 
 class RetrofitInstance {
     companion object {
-        val BASE_URL: String = "http://192.168.0.54:8080/"
 
+        var BASE_URL: String = "http://10.0.2.2:8080/"
         fun getRetrofitInstance(): Retrofit {
+
             return Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl("http://" + BASE_URL + ":8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
