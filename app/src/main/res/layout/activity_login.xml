@@ -84,6 +84,7 @@
             app:hintAnimationEnabled="true"
             app:errorEnabled="true">
 
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_id"
                 android:layout_width="match_parent"
@@ -91,6 +92,7 @@
                 android:fontFamily="@font/nanum_square_round_l"
                 android:singleLine="true"
                 android:text="981215"
+
                 android:hint="사번" />
 
         </com.google.android.material.textfield.TextInputLayout>

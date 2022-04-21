@@ -6,13 +6,13 @@ import lombok.Data
 @Data
 data class User (
     @SerializedName("userId")
-    var userId: String? = null,
+    var userId: String,
     @SerializedName("userPw")
-    var userPw: String? = null,
+    var userPw: String,
     @SerializedName("userName")
-    var userName: String? = null,
+    var userName: String,
     @SerializedName("userWorktype")
-    var userWorktype: String? = null,
+    var userWorktype: String,
     @SerializedName("userGroup")
-    var userGroup: String? = null
+    var userGroup: String
 ): Serializable

@@ -3,12 +3,19 @@ package com.returnz3ro.messystem.view.adapter
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.opengl.Visibility
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Adapter
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.content.ContextCompat
@@ -20,15 +27,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.returnz3ro.messystem.R
 import com.returnz3ro.messystem.databinding.ItemListBinding
 import com.returnz3ro.messystem.service.model.Joborder
+import com.returnz3ro.messystem.service.model.Slitter
 import com.returnz3ro.messystem.utils.*
 import com.returnz3ro.messystem.view.ui.animationPlaybackSpeed
 import okhttp3.internal.toImmutableList
 
 class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>(){
 
+    private val context = context
+
     private val originalBg: Int by bindColor(context, R.color.white)
     private val emergencyBg: Int by bindColor(context, R.color.zemgred)
     private val expandedBg: Int by bindColor(context, R.color.white)
+
 
     private val listItemHorizontalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
     private val listItemVerticalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
@@ -41,7 +52,6 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     private lateinit var recyclerView: RecyclerView
     private var expandedModel: Joborder? = null
     private var isScaledDown = false
-    private var joborderData : Joborder? = null
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -49,6 +59,7 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     ///////////////////////////////////////////////////////////////////////////
 
     var joborders = mutableListOf<Joborder>()
+    var slitters = mutableListOf<Slitter>()
 
     override fun getItemCount(): Int {
         return joborders.size
@@ -56,6 +67,11 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
 
     fun setJoborderlist(joborders: List<Joborder>){
         this.joborders = joborders.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun setSlitterList(slitters: List<Slitter>){
+        this.slitters = slitters.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -70,25 +86,17 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
         this.recyclerView = recyclerView
     }
 
-    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val joborder = joborders[position]
         holder.binding.joborder = joborder
-        joborderData = joborder
+        onBindViewHolerInit(holder)
 
-        //작업전
-//        if(joborder.joborderStatus == 0)
-//            holder.binding.statusIcon.setColorFilter(R.color.zblue)
-        //작업중
-        if(joborder.joborderStatus == 0)
-            holder.binding.statusIcon.setColorFilter(R.color.zblue)
-        //작업완료
-        if(joborder.joborderStatus == 2)
-            holder.binding.statusIcon.setColorFilter(R.color.zgreen)
+        holder.binding.btnWorkstart.setOnClickListener{
+
+        }
 
         expandItem(holder, joborder == expandedModel, animate = false)
         scaleDownItem(holder, position, isScaledDown)
-
         holder.binding.cardContainer.setOnClickListener {
             if (expandedModel == null) {
 
@@ -133,6 +141,47 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
         }
     }
 
+    private fun onBindViewHolerInit(holder: MainViewHolder) {
+        setJoborderStateIconColor(holder)
+        setJoborderWorker(holder)
+        setSlitterAdapter(holder)
+    }
+
+    private fun setSlitterAdapter(holder: MainViewHolder) {
+        var slittername = mutableListOf<String>()
+        for(s in slitters){
+            slittername.add(s.slitterName)
+        }
+        holder.binding.spnSlitter.setIsFocusable(true)
+        holder.binding.spnSlitter.setItems(slittername)
+        holder.binding.joborder?.joborderSlitterNo?.let {
+            holder.binding.spnSlitter.selectItemByIndex(
+                it - 1
+            )
+        }
+    }
+
+    private fun setJoborderStateIconColor(holder: MainViewHolder) {
+        if(holder.binding.joborder?.joborderStatus == 1){
+            holder.binding.statusIcon.setColorFilter(context.getColor(R.color.zgray));
+        } else if(holder.binding.joborder?.joborderStatus == 2){
+            holder.binding.statusIcon.setColorFilter(context.getColor(R.color.zgreen));
+        }
+    }
+
+    private fun setJoborderWorker(holder: MainViewHolder) {
+        if(holder.binding.joborder?.joborderStatus == 0){
+            holder.binding.joborderWorker.visibility = View.GONE
+            holder.binding.joborderWorkerLabel.visibility = View.GONE
+            holder.binding.btnWorkstart.visibility = View.VISIBLE
+        }
+        else if(holder.binding.joborder?.joborderStatus == 1 || holder.binding.joborder?.joborderStatus == 2){
+            holder.binding.joborderWorker.visibility = View.VISIBLE
+            holder.binding.joborderWorkerLabel.visibility = View.VISIBLE
+            holder.binding.btnWorkstart.visibility = View.GONE
+        }
+    }
+
     override fun onViewAttachedToWindow(holder: MainViewHolder) {
         super.onViewAttachedToWindow(holder)
 
@@ -143,14 +192,11 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
             holder.binding.cardContainer.doOnLayout { view ->
                 originalHeight = view.height
 
-                // show expandView and record expandedHeight in next layout pass
-                // (doOnPreDraw) and hide it immediately. We use onPreDraw because
-                // it's called after layout is done. doOnNextLayout is called during
-                // layout phase which causes issues with hiding expandView.
                 holder.binding.expandView.isVisible = true
                 view.doOnPreDraw {
                     expandedHeight = view.height
                     holder.binding.expandView.isVisible = false
+
                 }
             }
         }
@@ -164,13 +210,12 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
         holder.binding.cardContainer.layoutParams.width =
             (originalWidth + (expandedWidth - originalWidth) * progress).toInt()
 
-        if(joborderData?.joborderEmg == 0)
+        if(holder.binding.joborder?.joborderEmg == 0)
             holder.binding.cardContainer.setBackgroundColor(blendColors(originalBg, expandedBg, progress))
-        else if(joborderData?.joborderEmg == 1)
+        else if(holder.binding.joborder?.joborderEmg == 1)
             holder.binding.cardContainer.setBackgroundColor(blendColors(emergencyBg, expandedBg, progress))
 
         holder.binding.cardContainer.requestLayout()
-
         holder.binding.chevron.rotation = 90 * progress
     }
 
@@ -233,8 +278,6 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     private fun scaleDownItem(holder: MainViewHolder, position: Int, isScaleDown: Boolean) {
         setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
     }
-
-
 }
 ///////////////////////////////////////////////////////////////////////////
 // ViewHolder

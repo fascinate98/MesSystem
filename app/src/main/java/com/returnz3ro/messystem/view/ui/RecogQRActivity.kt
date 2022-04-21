@@ -2,6 +2,7 @@ package com.returnz3ro.messystem.view.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,15 +23,17 @@ import org.json.JSONObject
 class RecogQRActivity : AppCompatActivity(){
 
     private lateinit var qrScan: IntentIntegrator
-    private lateinit var binding: ActivityRecogqrBinding;
+    private lateinit var binding: ActivityRecogqrBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recogqr)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         qrScan = IntentIntegrator(this)
         qrScan.setOrientationLocked(false)
         qrScan.initiateScan()
+        qrScan.setBeepEnabled(false)
+
 
         var webSettings : WebSettings = binding.wv.settings
         webSettings.javaScriptEnabled = true
@@ -62,6 +65,9 @@ class RecogQRActivity : AppCompatActivity(){
             if (binding.wv.canGoBack()) {
                 binding.wv.goBack()
             } else {
+//                val mainIntent=Intent(this, MainActivity::class.java)
+//                startActivity(mainIntent)
+//                finish()
                 qrScan.initiateScan()
             }
         } else {
@@ -82,6 +88,9 @@ class RecogQRActivity : AppCompatActivity(){
             if (result.contents == null) {
                 //토스트를 띄운다.
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+                val mainIntent=Intent(this, MainActivity::class.java)
+                startActivity(mainIntent)
+                finish()
             }
             // 컨텐츠가 있으면
             else {

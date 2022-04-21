@@ -9,6 +9,10 @@ data class Joborder (
     @SerializedName("joborderJobname")
     var joborderJobname: String? = null,
 
+    // 작지명
+    @SerializedName("joborderId")
+    var joborderId: Int? = null,
+
     // 부모 품번
     @SerializedName("materialProdId")
     var materialProdId: String? = null,
@@ -30,8 +34,8 @@ data class Joborder (
     var joborderStatus: Int? = null,
 
     //작업자
-    @SerializedName("joborderWorker")
-    var joborderWorker: String? = null,
+    @SerializedName("userName")
+    var userName: String? = null,
 
     //깅금
    @SerializedName("joborderEmg")
@@ -42,7 +46,7 @@ data class Joborder (
     var joborderWidth: String? = null,
 
     //설비번호
-    @SerializedName("joborderSetEquipEquipId")
-    var joborderSetEquipEquipId: String? = null
+    @SerializedName("joborderSlitterNo")
+    var joborderSlitterNo: Int = 0
 
 )

@@ -4,7 +4,8 @@ animated, it needs to stay centered. Otherwise we need to animate x and y values
 too. layout_gravity="center_horizontal" is a lot simpler.
 -->
 
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
@@ -14,8 +15,6 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     </data>
 
 <FrameLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -96,8 +95,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                     android:layout_alignParentRight="true"
                     android:text="작업중"
                     android:textSize="10dp"
-                    app:srcCompat="@drawable/ic_main_status"
-                    app:tint="@color/zblue"/>
+                    app:tint="@color/zblue"
+                    app:srcCompat="@drawable/ic_main_status" />
 
                 <LinearLayout
                     android:id="@+id/expand_view"
@@ -210,30 +209,67 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                         android:orientation="horizontal"
                         android:padding="10dp">
 
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/spn_SPList"
-                            android:layout_weight="1"
+                        <com.skydoves.powerspinner.PowerSpinnerView
+                            android:id="@+id/spn_slitter"
                             android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:paddingRight="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:padding="6dp"
                             android:spinnerMode="dropdown"
-                            android:popupBackground="#fff"/>
+                            android:textSize="13sp"
+                            app:spinner_arrow_animate="true"
+                            app:spinner_arrow_gravity="end"
+                            app:spinner_arrow_padding="8dp"
+                            app:spinner_arrow_tint="@color/zblue"
+                            app:spinner_divider_color="@color/ztextcolorgray"
+                            app:spinner_divider_show="true"
+                            app:spinner_divider_size="0.4dp"
+                            app:spinner_popup_animation="bounce"
+                            app:spinner_popup_background="@color/white"
+                            app:spinner_popup_elevation="10dp" />
 
                         <View
-                            android:layout_width="30dp"
+                            android:layout_width="25dp"
                             android:layout_height="match_parent">
-
                         </View>
 
                         <Button
+                            android:id="@+id/btn_workstart"
                             android:backgroundTint="@color/zblue"
                             android:layout_weight="1"
                             android:layout_width="0dp"
-                            android:text="작업시작"
-                            android:textSize="12dp"
                             android:layout_height="40dp"
+                            android:text="작업시작"
+                            android:textSize="13sp"
                             android:fontFamily="@font/nanum_square_round_b"
-                            android:textColor="@color/white"/>
+                            android:textColor="@color/white"
+                            android:visibility="gone"/>
+
+                        <TextView
+                            android:id="@+id/joborder_worker_label"
+                            android:backgroundTint="@color/zblue"
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:layout_gravity="center_vertical"
+                            android:text="작업자 : "
+                            android:textSize="13sp"
+                            android:fontFamily="@font/nanum_square_round_b"/>
+
+                        <TextView
+                            android:id="@+id/joborder_worker"
+                            android:backgroundTint="@color/zblue"
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:layout_gravity="center_vertical"
+                            android:text="@{joborder.userName}"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/nanum_square_round_b"/>
 
                     </LinearLayout>
                 </LinearLayout>

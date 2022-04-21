@@ -32,6 +32,7 @@ class UserRepository {
         val loginData= MutableLiveData<User>()
         val apiInterface = RetrofitInstance.getRetrofitInstance()
         val jsonData: JsonObject = JsonObject().apply {
+            //loginData.value?.userId.toString()
             addProperty("userId", userId)
             addProperty("userPw", userPw)
         }

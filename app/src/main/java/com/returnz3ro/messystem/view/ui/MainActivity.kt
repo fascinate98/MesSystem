@@ -58,14 +58,11 @@ class MainActivity: AppCompatActivity() {
         // Appbar behavior init
         (binding.appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior = ToolbarBehavior()
 
-
-        // RecyclerView Init
-
-
-        //get data retrofit
-        getJoborderList()
+        // RecyclerView Init / get Slitter, Joborder list
+        getDataList()
 
         mainViewModel.getAllJoborders()
+        mainViewModel.getSlitterList()
 
         //qr icon click
         binding.qrIcon.setOnClickListener {
@@ -103,8 +100,6 @@ class MainActivity: AppCompatActivity() {
         binding.swipeContainer.setRepeatMode(SSPullToRefreshLayout.RepeatMode.REPEAT)
         binding.swipeContainer.setRepeatCount(SSPullToRefreshLayout.RepeatCount.INFINITE)
         binding.swipeContainer.setRefreshViewParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300))
-        binding.swipeContainer.clipToOutline = true
-        binding.recyclerView.clipToOutline = true
 
         //뒤로 가기 버튼 2번 클릭시 종료
         backPressCloseHandler= BackPressCloseHandler(this)
@@ -117,7 +112,7 @@ class MainActivity: AppCompatActivity() {
         addDuration = loadingDuration
     }
 
-    private fun getJoborderList() {
+    private fun getDataList() {
         adapter = JoborderAdapter(this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -127,7 +122,16 @@ class MainActivity: AppCompatActivity() {
         mainViewModel.getAllJoborders()?.observe(this, Observer { joborderList->
             if(joborderList!=null){
                 adapter.setJoborderlist(joborderList)
-                Log.d(ContentValues.TAG, joborderList.get(1).joborderJobname + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
+                binding.swipeContainer.setRefreshing(false)
+            }else{
+                Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        mainViewModel.getSlitterList()?.observe(this, Observer { slitterList->
+            if(slitterList!=null){
+                adapter.setSlitterList(slitterList)
                 binding.swipeContainer.setRefreshing(false)
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()

@@ -65,7 +65,6 @@ class ToolbarBehavior : CoordinatorLayout.Behavior<AppBarLayout>() {
 
                 //--- translate up drawer icon
                 var translate: Float = (toolbarOriginalHeight - toolbar.layoutParams.height) / (toolbarOriginalHeight - toolbarCollapsedHeight)
-                Log.d(TAG, translate.toString() + "    11111")
                 translate *= toolbarOriginalHeight
 
                 drawerIcon.translationY = -translate
