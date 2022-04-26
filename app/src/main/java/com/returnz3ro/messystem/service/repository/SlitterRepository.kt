@@ -1,15 +1,11 @@
 package com.returnz3ro.messystem.service.repository
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.JsonObject
 import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
-import com.returnz3ro.messystem.service.model.*
+import com.returnz3ro.messystem.service.model.datamodel.Slitter
+import com.returnz3ro.messystem.service.model.responsemodel.ResponseSlitterData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

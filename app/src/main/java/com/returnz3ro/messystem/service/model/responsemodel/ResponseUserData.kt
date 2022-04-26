@@ -1,15 +1,16 @@
-package com.returnz3ro.messystem.service.model
+package com.returnz3ro.messystem.service.model.responsemodel
 
 import com.google.gson.annotations.SerializedName
+import com.returnz3ro.messystem.service.model.datamodel.User
 import lombok.Data
 
 
 @Data
-data class ResponseJoborderData (
+data class ResponseUserData (
     @SerializedName("result")
     var result: String,
     @SerializedName("data")
-    var joborders: List<Joborder>,
+    var user: User,
     @SerializedName("message")
     var message: String
 )

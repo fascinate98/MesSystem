@@ -15,7 +15,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MesSystem" >
+        android:theme="@style/Theme.MesSystem"
+        android:hardwareAccelerated="true">
 
         <activity android:name=".view.ui.LoginActivity"
             android:exported="true">
@@ -32,8 +33,9 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation"/>
         <activity android:name=".view.ui.RecogQRActivity"
+            android:screenOrientation="portrait"
             android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
     </application>
 

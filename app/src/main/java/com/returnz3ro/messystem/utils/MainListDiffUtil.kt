@@ -1,7 +1,7 @@
 package com.returnz3ro.messystem.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.returnz3ro.messystem.service.model.Joborder
+import com.returnz3ro.messystem.service.model.datamodel.Joborder
 
 class MainListDiffUtil(
     private val oldList: List<Joborder>,

@@ -11,7 +11,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
     <data>
         <variable
             name="joborder"
-            type="com.returnz3ro.messystem.service.model.Joborder"/>
+            type="com.returnz3ro.messystem.service.model.datamodel.Joborder"/>
     </data>
 
 <FrameLayout
@@ -37,7 +37,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
         <FrameLayout
             android:id="@+id/card_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!--
             scale_container is used to scale down the item when the scale down
@@ -228,7 +228,33 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             app:spinner_divider_size="0.4dp"
                             app:spinner_popup_animation="bounce"
                             app:spinner_popup_background="@color/white"
-                            app:spinner_popup_elevation="10dp" />
+                            app:spinner_popup_elevation="10dp"
+                            android:visibility="gone"/>
+
+
+                        <TextView
+                            android:id="@+id/joborder_slitter_label"
+                            android:backgroundTint="@color/zblue"
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:layout_gravity="center_vertical"
+                            android:text="설비명 : "
+                            android:textSize="13sp"
+                            android:fontFamily="@font/nanum_square_round_b"/>
+
+                        <TextView
+                            android:id="@+id/joborder_slittername"
+                            android:backgroundTint="@color/zblue"
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:layout_gravity="center_vertical"
+                            android:text="@{joborder.slitterName}"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/nanum_square_round_b"/>
 
                         <View
                             android:layout_width="25dp"
@@ -246,6 +272,16 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:fontFamily="@font/nanum_square_round_b"
                             android:textColor="@color/white"
                             android:visibility="gone"/>
+                        <Button
+                            android:id="@+id/btn_workfinish"
+                            android:backgroundTint="@color/zblue"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="작업완료"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:textColor="@color/white"/>
 
                         <TextView
                             android:id="@+id/joborder_worker_label"
@@ -257,7 +293,8 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:layout_gravity="center_vertical"
                             android:text="작업자 : "
                             android:textSize="13sp"
-                            android:fontFamily="@font/nanum_square_round_b"/>
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/joborder_worker"
@@ -267,9 +304,10 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:layout_height="wrap_content"
                             android:gravity="left"
                             android:layout_gravity="center_vertical"
-                            android:text="@{joborder.userName}"
+                            android:text="@{joborder.joborderWorkerName}"
                             android:textSize="13sp"
-                            android:fontFamily="@font/nanum_square_round_b"/>
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:visibility="gone"/>
 
                     </LinearLayout>
                 </LinearLayout>

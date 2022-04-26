@@ -1,10 +1,8 @@
 package com.returnz3ro.messystem.view.ui
 
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,12 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.returnz3ro.messystem.R
 import com.returnz3ro.messystem.databinding.ActivityLoginBinding
-import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
-import com.returnz3ro.messystem.service.model.User
+import com.returnz3ro.messystem.service.model.datastore.DataStoreModule
 import com.returnz3ro.messystem.view.callback.LoginActivityCallback
 import com.returnz3ro.messystem.viewmodel.LoginViewModel
-import kotlin.math.log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity(), LoginActivityCallback {
@@ -28,13 +26,14 @@ class LoginActivity : AppCompatActivity(), LoginActivityCallback {
     private var activityLoginBinding: ActivityLoginBinding?=null
     private var loginViewModel: LoginViewModel?=null
     private var backPressCloseHandler: BackPressCloseHandler?= null
+    private lateinit var userData: DataStoreModule
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityLoginBinding= DataBindingUtil.setContentView(this, R.layout.activity_login)
         activityLoginBinding?.loginActivityCallback=this
         loginViewModel = ViewModelProvider(this, LoginViewModel.Factory(this)).get(LoginViewModel::class.java)
-
+        userData = DataStoreModule(this)
         //뒤로 가기 버튼 2번 클릭시 종료
         backPressCloseHandler= BackPressCloseHandler(this)
     }
@@ -48,6 +47,9 @@ class LoginActivity : AppCompatActivity(), LoginActivityCallback {
 
         loginViewModel?.loginService(id, password)?.observe(this, Observer { loginUser->
             if(loginUser!=null){
+                GlobalScope.launch {
+                    userData.setUserData(loginUser)
+                }
                 val mainIntent=Intent(this, MainActivity::class.java)
                 mainIntent.putExtra("loginUser", loginUser)
                 startActivity(mainIntent)

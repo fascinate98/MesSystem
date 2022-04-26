@@ -8,8 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import com.returnz3ro.messystem.retrofit.ApiInterface
 import com.returnz3ro.messystem.retrofit.RetrofitInstance
-import com.returnz3ro.messystem.service.model.ResponseUserData
-import com.returnz3ro.messystem.service.model.User
+import com.returnz3ro.messystem.service.model.responsemodel.ResponseUserData
+import com.returnz3ro.messystem.service.model.datamodel.User
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

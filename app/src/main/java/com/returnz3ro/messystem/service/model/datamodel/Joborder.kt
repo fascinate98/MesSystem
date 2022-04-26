@@ -1,4 +1,4 @@
-package com.returnz3ro.messystem.service.model
+package com.returnz3ro.messystem.service.model.datamodel
 
 import com.google.gson.annotations.SerializedName
 import lombok.Data
@@ -11,7 +11,7 @@ data class Joborder (
 
     // 작지명
     @SerializedName("joborderId")
-    var joborderId: Int? = null,
+    var joborderId: String? = null,
 
     // 부모 품번
     @SerializedName("materialProdId")
@@ -33,9 +33,13 @@ data class Joborder (
     @SerializedName("joborderStatus")
     var joborderStatus: Int? = null,
 
-    //작업자
+    //
     @SerializedName("userName")
     var userName: String? = null,
+
+    //작업자
+    @SerializedName("joborderWorkerName")
+    var joborderWorkerName: String? = null,
 
     //깅금
    @SerializedName("joborderEmg")
@@ -44,6 +48,10 @@ data class Joborder (
     //부모폭
     @SerializedName("joborderWidth")
     var joborderWidth: String? = null,
+
+    //슬리터명
+    @SerializedName("slitterName")
+    var slitterName: String? = null,
 
     //설비번호
     @SerializedName("joborderSlitterNo")

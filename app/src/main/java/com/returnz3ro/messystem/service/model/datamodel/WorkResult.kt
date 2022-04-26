@@ -1,4 +1,4 @@
-package com.returnz3ro.messystem.service.model
+package com.returnz3ro.messystem.service.model.datamodel
 
 import com.google.gson.annotations.SerializedName
 import lombok.Data
@@ -15,6 +15,6 @@ data class WorkResult (
 
     //설비번호
     @SerializedName("joborderSlitterNo")
-    var joborderSlitterNo: String? = null,
+    var joborderSlitterNo: Int? = null,
 
 )

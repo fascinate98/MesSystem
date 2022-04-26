@@ -2,44 +2,50 @@ package com.returnz3ro.messystem.view.adapter
 
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.opengl.Visibility
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Adapter
-import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
+import android.widget.AdapterView
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
-import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.returnz3ro.messystem.R
 import com.returnz3ro.messystem.databinding.ItemListBinding
-import com.returnz3ro.messystem.service.model.Joborder
-import com.returnz3ro.messystem.service.model.Slitter
+import com.returnz3ro.messystem.service.model.datamodel.Joborder
+import com.returnz3ro.messystem.service.model.datamodel.Slitter
+import com.returnz3ro.messystem.service.model.datamodel.User
+import com.returnz3ro.messystem.service.model.datamodel.WorkResult
+import com.returnz3ro.messystem.service.model.datastore.DataStoreModule
 import com.returnz3ro.messystem.utils.*
 import com.returnz3ro.messystem.view.ui.animationPlaybackSpeed
-import okhttp3.internal.toImmutableList
+import com.returnz3ro.messystem.viewmodel.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 
-class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>(){
+class JoborderAdapter(context: Context, listener: OnItemClickListener): RecyclerView.Adapter<MainViewHolder>(){
+
+    interface OnItemClickListener {
+        fun onStartWorkClick(j: Joborder)
+        fun onFinishWorkClick(j: Joborder)
+    }
 
     private val context = context
+    private val listener = listener
+    private var loginUser: User = User("","","","","")
+    private lateinit var dataStore: DataStoreModule
 
     private val originalBg: Int by bindColor(context, R.color.white)
     private val emergencyBg: Int by bindColor(context, R.color.zemgred)
     private val expandedBg: Int by bindColor(context, R.color.white)
-
 
     private val listItemHorizontalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
     private val listItemVerticalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
@@ -52,7 +58,6 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
     private lateinit var recyclerView: RecyclerView
     private var expandedModel: Joborder? = null
     private var isScaledDown = false
-
 
     ///////////////////////////////////////////////////////////////////////////
     // Methods
@@ -67,12 +72,10 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
 
     fun setJoborderlist(joborders: List<Joborder>){
         this.joborders = joborders.toMutableList()
-        notifyDataSetChanged()
     }
 
     fun setSlitterList(slitters: List<Slitter>){
         this.slitters = slitters.toMutableList()
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -88,13 +91,29 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val joborder = joborders[position]
-        holder.binding.joborder = joborder
-        onBindViewHolerInit(holder)
+        holder.bind(joborder)
+        onBindViewHodlerInit(holder)
 
-        holder.binding.btnWorkstart.setOnClickListener{
 
+        dataStore = DataStoreModule(context)
+        CoroutineScope(Dispatchers.Main).launch {
+            dataStore.user.collect{
+                loginUser = it
+            }
         }
+        holder.binding.btnWorkstart.setOnClickListener{
+            var joborder = holder.binding.joborder
+            joborder?.let{
+                listener.onStartWorkClick(joborder)
 
+            }
+        }
+        holder.binding.btnWorkfinish.setOnClickListener{
+            var joborder = holder.binding.joborder
+            joborder?.let{
+                listener.onFinishWorkClick(joborder)
+            }
+        }
         expandItem(holder, joborder == expandedModel, animate = false)
         scaleDownItem(holder, position, isScaledDown)
         holder.binding.cardContainer.setOnClickListener {
@@ -121,6 +140,7 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
                 expandedModel = joborder
             }
         }
+
     }
 
     private fun expandItem(holder: MainViewHolder, expand: Boolean, animate: Boolean) {
@@ -141,7 +161,7 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
         }
     }
 
-    private fun onBindViewHolerInit(holder: MainViewHolder) {
+    private fun onBindViewHodlerInit(holder: MainViewHolder) {
         setJoborderStateIconColor(holder)
         setJoborderWorker(holder)
         setSlitterAdapter(holder)
@@ -159,6 +179,14 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
                 it - 1
             )
         }
+        holder.binding.spnSlitter.setOnSpinnerItemSelectedListener<String> {
+                oldIndex, oldItem, newIndex, newItem ->
+            holder.binding.joborder?.joborderSlitterNo?.let {
+                holder.binding.joborder?.joborderSlitterNo = newIndex + 1
+
+            }
+        }
+
     }
 
     private fun setJoborderStateIconColor(holder: MainViewHolder) {
@@ -166,19 +194,55 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
             holder.binding.statusIcon.setColorFilter(context.getColor(R.color.zgray));
         } else if(holder.binding.joborder?.joborderStatus == 2){
             holder.binding.statusIcon.setColorFilter(context.getColor(R.color.zgreen));
+        }else{
+            holder.binding.statusIcon.setColorFilter(context.getColor(R.color.zblue));
         }
     }
 
     private fun setJoborderWorker(holder: MainViewHolder) {
+        //작업 전
         if(holder.binding.joborder?.joborderStatus == 0){
             holder.binding.joborderWorker.visibility = View.GONE
             holder.binding.joborderWorkerLabel.visibility = View.GONE
             holder.binding.btnWorkstart.visibility = View.VISIBLE
+            holder.binding.btnWorkfinish.visibility = View.GONE
+            holder.binding.joborderSlitterLabel.visibility = View.GONE
+            holder.binding.joborderSlittername.visibility = View.GONE
+            holder.binding.spnSlitter.visibility = View.VISIBLE
+
         }
-        else if(holder.binding.joborder?.joborderStatus == 1 || holder.binding.joborder?.joborderStatus == 2){
+        //작업중
+        else if(holder.binding.joborder?.joborderStatus == 1){
+            holder.binding.joborderSlitterLabel.visibility = View.VISIBLE
+            holder.binding.joborderSlittername.visibility = View.VISIBLE
+            holder.binding.spnSlitter.visibility = View.GONE
+
+            //작업한 사람이 나야
+            if(holder.binding.joborder?.joborderWorkerName == loginUser.userName){
+                holder.binding.joborderWorker.visibility = View.GONE
+                holder.binding.joborderWorkerLabel.visibility = View.GONE
+                holder.binding.btnWorkstart.visibility = View.GONE
+                holder.binding.btnWorkfinish.visibility = View.VISIBLE
+
+            }
+            //작업한사람이 나가 아니야
+            else{
+                holder.binding.joborderWorker.visibility = View.VISIBLE
+                holder.binding.joborderWorkerLabel.visibility = View.VISIBLE
+                holder.binding.btnWorkstart.visibility = View.GONE
+                holder.binding.btnWorkfinish.visibility = View.GONE
+
+            }
+        }
+        //작업 완료
+        else if(holder.binding.joborder?.joborderStatus == 2){
+            holder.binding.joborderSlitterLabel.visibility = View.VISIBLE
+            holder.binding.joborderSlittername.visibility = View.VISIBLE
+            holder.binding.spnSlitter.visibility = View.GONE
             holder.binding.joborderWorker.visibility = View.VISIBLE
             holder.binding.joborderWorkerLabel.visibility = View.VISIBLE
             holder.binding.btnWorkstart.visibility = View.GONE
+            holder.binding.btnWorkfinish.visibility = View.GONE
         }
     }
 
@@ -287,6 +351,7 @@ class JoborderAdapter(context : Context): RecyclerView.Adapter<MainViewHolder>()
 class MainViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(joborder: Joborder) {
         binding.joborder = joborder
+
         binding.executePendingBindings() //데이터가 수정되면 즉각 바인딩
     }
 }
