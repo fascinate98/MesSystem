@@ -37,7 +37,7 @@ class UserRepository {
             addProperty("userPw", userPw)
         }
 
-        Log.d(TAG, jsonData.toString() + "으애애ㅐㅐㅐㅐㅐㅐㅐ")
+
         var loginService: ApiInterface = apiInterface.create(ApiInterface::class.java)
 
         loginService.requestLogin(jsonData).enqueue(object: Callback<ResponseUserData>{

@@ -6,8 +6,10 @@ import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.datastore.dataStore
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -44,7 +47,6 @@ class MainActivity: AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var dataStore: DataStoreModule
 
-    private val drawerLayout: DrawerLayout by bindView(R.id.drawer_layout)
     private val userName: TextView by bindView(R.id.username)
     private val logout: LinearLayout by bindView(R.id.logout)
     private var loginUser: User = User("","","","","")
@@ -52,6 +54,12 @@ class MainActivity: AppCompatActivity() {
 
     private val loadingDuration: Long
         get() = (resources.getInteger(R.integer.loadingAnimDuration)  / animationPlaybackSpeed).toLong()
+
+    var isAdapterFiltered: Boolean
+        get() = adapter.isFiltered
+        set(value) {
+            adapter.isFiltered = value
+        }
 
 
     @SuppressLint("SetTextI18n")
@@ -61,8 +69,14 @@ class MainActivity: AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Appbar behavior init
+        (binding.appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior = ToolbarBehavior()
 
 
+        // Init FilterLayout
+        binding.filtersMotionLayout.isVisible = true
+
+        // get userinfo from data store
         dataStore = DataStoreModule(this)
         CoroutineScope(Dispatchers.Main).launch {
             dataStore.user.collect{
@@ -74,22 +88,25 @@ class MainActivity: AppCompatActivity() {
         // Setting viewmodel
         mainViewModel = ViewModelProvider(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
 
-        // Appbar behavior init
-        (binding.appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior = ToolbarBehavior()
 
-        // Nav Drawer Init
-
-        updateRecyclerViewAnimDuration()
-
-
-        // RecyclerView Init / get Slitter, Joborder list
+        // RecyclerView Init
         setAdapter()
 
+        // Nav Drawer Init
+        binding.filtersMotionLayout.updateDurations()
+        updateRecyclerViewAnimDuration()
+
+        //drawer icon click
+        binding.drawerIcon.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        // set refresh animation
         setPullToRefresh()
 
+        // check qr recog
         var a = intent.getStringExtra("qrdata")
         if(a != null){
-            Log.d(TAG, a + "dfsdfsfsdfsfsdfsdf123123123123123123123123123123")
             getQrJoborder(a)
             getSlitterList()
             mainViewModel.recogQrcode(a)
@@ -105,11 +122,6 @@ class MainActivity: AppCompatActivity() {
             finish()
         }
 
-        //drawer icon click
-        binding.drawerIcon.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
         //logout click
         logout.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
@@ -121,7 +133,6 @@ class MainActivity: AppCompatActivity() {
 
         //뒤로 가기 버튼 2번 클릭시 종료
         backPressCloseHandler= BackPressCloseHandler(this)
-
     }
 
 
@@ -139,7 +150,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     //Update RecyclerView Item Animation Durations
-    private fun getAdapterScaleDownAnimator(isScaledDown: Boolean): ValueAnimator =
+    fun getAdapterScaleDownAnimator(isScaledDown: Boolean): ValueAnimator =
         adapter.getScaleDownAnimator(isScaledDown)
 
     private fun setPullToRefresh(){
@@ -189,12 +200,13 @@ class MainActivity: AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.setHasFixedSize(true)
+        updateRecyclerViewAnimDuration()
     }
 
     private fun getJoborderList(){
         mainViewModel.getAllJoborders()?.observe(this, Observer { joborderList->
             if(joborderList!=null){
-                adapter.setJoborderlist(joborderList)
+                adapter.setJoborderList(joborderList)
                 binding.swipeContainer.setRefreshing(false)
                 adapter.notifyDataSetChanged()
             }else{
@@ -207,7 +219,8 @@ class MainActivity: AppCompatActivity() {
         mainViewModel.recogQrcode("C1040_1_450380")?.observe(this, Observer { joborderList->
             if(joborderList!=null){
                 Log.d(TAG, joborderList[0].joborderJobname + "            dfsdfsfsdfsfsdfsdf123123123123123123123123123123")
-                adapter.setJoborderlist(joborderList)
+                //adapter.setFilteredJoborderList(joborderList)
+                adapter.isFiltered = true
                 binding.swipeContainer.setRefreshing(false)
                 adapter.notifyDataSetChanged()
             }else{
@@ -215,7 +228,6 @@ class MainActivity: AppCompatActivity() {
             }
         })
     }
-
 
 
 
@@ -238,5 +250,6 @@ class MainActivity: AppCompatActivity() {
         //super.onBackPressed();
         backPressCloseHandler?.onBackPressed()
     }
+
 
 }

@@ -2,12 +2,16 @@ package com.returnz3ro.messystem.view.adapter
 
 
 import android.animation.ValueAnimator
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.AdapterView
+import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
@@ -54,46 +58,60 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     private var originalHeight = -1 // will be calculated dynamically
     private var expandedHeight = -1 // will be calculated dynamically
 
+    // filteredItems is a static field to simulate filtering of random items
+    private var filteredItems =  listOf("417", "416")
+    private var joborders = mutableListOf<Joborder>()
+    private var slitters = mutableListOf<Slitter>()
+    private var modelListFiltered = mutableListOf<Joborder>()
+    private var joborderlist: MutableList<Joborder> = mutableListOf<Joborder>()
+        get()= if(isFiltered)modelListFiltered else joborders
+
+    var isFiltered = true
+        set(value) {
+            field = value
+            val diff = MainListDiffUtil(
+                if (field) joborders else modelListFiltered,
+                if (field) modelListFiltered else joborders
+            )
+            DiffUtil.calculateDiff(diff).dispatchUpdatesTo(this)
+        }
+
     private val listItemExpandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+
     private lateinit var recyclerView: RecyclerView
     private var expandedModel: Joborder? = null
     private var isScaledDown = false
+
 
     ///////////////////////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////////////////////
 
-    var joborders = mutableListOf<Joborder>()
-    var slitters = mutableListOf<Slitter>()
 
-    override fun getItemCount(): Int {
-        return joborders.size
-    }
-
-    fun setJoborderlist(joborders: List<Joborder>){
-        this.joborders = joborders.toMutableList()
-    }
-
-    fun setSlitterList(slitters: List<Slitter>){
-        this.slitters = slitters.toMutableList()
-    }
+    override fun getItemCount(): Int = joborderlist.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+//        Log.d(TAG, " sdfsdfsdf씨발")
+//        var a = joborders.filterIndexed { index, joborder ->
+//            joborder.joborderId in filteredItems
+//        }
+//        modelListFiltered = a.toMutableList()
+//        joborderlist = if(isFiltered) modelListFiltered else joborders
+//        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
+//        Log.d(TAG, this.modelListFiltered.toString()+ "132323123씨발22")
+        //MainViewHolder(inflater.inflate(R.layout.item_list, parent, false))
         val binding = ItemListBinding.inflate(inflater, parent, false)
-        return MainViewHolder(binding)
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        this.recyclerView = recyclerView
+        return MainViewHolder(binding, inflater.inflate(R.layout.item_list, parent, false))
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        val joborder = joborders[position]
+        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
+        joborderlist = if(isFiltered) modelListFiltered else this.joborders
+        val joborder = joborderlist[position]
+        holder.binding.joborder = joborder
         holder.bind(joborder)
         onBindViewHodlerInit(holder)
-
 
         dataStore = DataStoreModule(context)
         CoroutineScope(Dispatchers.Main).launch {
@@ -114,8 +132,10 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
                 listener.onFinishWorkClick(joborder)
             }
         }
+
         expandItem(holder, joborder == expandedModel, animate = false)
         scaleDownItem(holder, position, isScaledDown)
+
         holder.binding.cardContainer.setOnClickListener {
             if (expandedModel == null) {
 
@@ -130,7 +150,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
             } else {
 
                 // collapse previously expanded view
-                val expandedModelPosition = joborders.indexOf(expandedModel!!)
+                val expandedModelPosition = joborderlist.indexOf(expandedModel!!)
                 val oldViewHolder =
                     recyclerView.findViewHolderForAdapterPosition(expandedModelPosition) as? MainViewHolder
                 if (oldViewHolder != null) expandItem(oldViewHolder, expand = false, animate = true)
@@ -159,6 +179,136 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
             holder.binding.expandView.isVisible = expand && expandedHeight >= 0
             setExpandProgress(holder, if (expand) 1f else 0f)
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
+
+
+    override fun onViewAttachedToWindow(holder: MainViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        // get originalHeight & expandedHeight if not gotten before
+        if (expandedHeight < 0) {
+            expandedHeight = 0 // so that this block is only called once
+
+            holder.binding.cardContainer.doOnLayout { view ->
+                originalHeight = view.height
+
+                holder.binding.expandView.isVisible = true
+                view.doOnPreDraw {
+                    expandedHeight = view.height
+                    holder.binding.expandView.isVisible = false
+
+                }
+            }
+        }
+    }
+
+
+    private fun setExpandProgress(holder: MainViewHolder, progress: Float) {
+        if (expandedHeight > 0 && originalHeight > 0) {
+            holder.binding.cardContainer.layoutParams.height =
+                (originalHeight + (expandedHeight - originalHeight) * progress).toInt()
+        }
+        holder.binding.cardContainer.layoutParams.width =
+            (originalWidth + (expandedWidth - originalWidth) * progress).toInt()
+
+        if(holder.binding.joborder?.joborderEmg == 0)
+            holder.binding.cardContainer.setBackgroundColor(blendColors(originalBg, expandedBg, progress))
+        else if(holder.binding.joborder?.joborderEmg == 1)
+            holder.binding.cardContainer.setBackgroundColor(blendColors(emergencyBg, expandedBg, progress))
+
+        holder.binding.cardContainer.requestLayout()
+        holder.binding.chevron.rotation = 90 * progress
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Scale Down Animation
+    ///////////////////////////////////////////////////////////////////////////
+
+    private inline val LinearLayoutManager.visibleItemsRange: IntRange
+        get() = findFirstVisibleItemPosition()..findLastVisibleItemPosition()
+
+    fun getScaleDownAnimator(isScaledDown: Boolean): ValueAnimator {
+        val lm = recyclerView.layoutManager as LinearLayoutManager
+
+        val animator = getValueAnimator(isScaledDown,
+            duration = 300L, interpolator = AccelerateDecelerateInterpolator()
+        ) { progress ->
+
+            // Get viewHolder for all visible items and animate attributes
+            for (i in lm.visibleItemsRange) {
+                val holder = recyclerView.findViewHolderForLayoutPosition(i) as MainViewHolder
+                setScaleDownProgress(holder, i, progress)
+            }
+        }
+
+        // Set adapter variable when animation starts so that newly binded views in
+        // onBindViewHolder will respect the new size when they come into the screen
+        animator.doOnStart { this.isScaledDown = isScaledDown }
+
+        // For all the non visible items in the layout manager, notify them to adjust the
+        // view to the new size
+        animator.doOnEnd {
+            repeat(lm.itemCount) { if (it !in lm.visibleItemsRange) notifyItemChanged(it) }
+        }
+        return animator
+    }
+
+
+    private fun setScaleDownProgress(holder: MainViewHolder, position: Int, progress: Float) {
+        val itemExpanded = position >= 0 && joborderlist[position] == expandedModel
+        holder.binding.cardContainer.layoutParams.apply {
+            width = ((if (itemExpanded) expandedWidth else originalWidth) * (1 - 0.1f * progress)).toInt()
+            height = ((if (itemExpanded) expandedHeight else originalHeight) * (1 - 0.1f * progress)).toInt()
+//            log("width=$width, height=$height [${"%.2f".format(progress)}]")
+        }
+        holder.binding.cardContainer.requestLayout()
+
+        holder.binding.scaleContainer.scaleX = 1 - 0.05f * progress
+        holder.binding.scaleContainer.scaleY = 1 - 0.05f * progress
+
+        holder.binding.scaleContainer.setPadding(
+            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt()
+        )
+
+        holder.binding.listItemFg.alpha = progress
+    }
+
+    private fun scaleDownItem(holder: MainViewHolder, position: Int, isScaleDown: Boolean) {
+        setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
+    }
+
+
+
+    fun setJoborderList(joborders: List<Joborder>){
+        this.joborders = joborders.toMutableList()
+        Log.d(TAG, " sdfsdfsdf씨발")
+        var a = joborders.filterIndexed { index, joborder ->
+            joborder.joborderId !in filteredItems
+        }
+        modelListFiltered = a.toMutableList()
+        joborderlist = if(isFiltered) modelListFiltered else this.joborders
+        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
+        Log.d(TAG, this.modelListFiltered.toString()+ "132323123씨발22")
+
+    }
+
+//    fun setFilteredJoborderList(joborders: List<Joborder>){
+//        joborders.forEachIndexed{ index, i ->
+//            i.joborderId?.let { this.filteredItems.add(index, i.joborderId!!) }
+//
+//        }
+//    }
+
+    fun setSlitterList(slitters: List<Slitter>){
+        this.slitters = slitters.toMutableList()
     }
 
     private fun onBindViewHodlerInit(holder: MainViewHolder) {
@@ -246,112 +396,21 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
         }
     }
 
-    override fun onViewAttachedToWindow(holder: MainViewHolder) {
-        super.onViewAttachedToWindow(holder)
-
-        // get originalHeight & expandedHeight if not gotten before
-        if (expandedHeight < 0) {
-            expandedHeight = 0 // so that this block is only called once
-
-            holder.binding.cardContainer.doOnLayout { view ->
-                originalHeight = view.height
-
-                holder.binding.expandView.isVisible = true
-                view.doOnPreDraw {
-                    expandedHeight = view.height
-                    holder.binding.expandView.isVisible = false
-
-                }
-            }
-        }
-    }
-
-    private fun setExpandProgress(holder: MainViewHolder, progress: Float) {
-        if (expandedHeight > 0 && originalHeight > 0) {
-            holder.binding.cardContainer.layoutParams.height =
-                (originalHeight + (expandedHeight - originalHeight) * progress).toInt()
-        }
-        holder.binding.cardContainer.layoutParams.width =
-            (originalWidth + (expandedWidth - originalWidth) * progress).toInt()
-
-        if(holder.binding.joborder?.joborderEmg == 0)
-            holder.binding.cardContainer.setBackgroundColor(blendColors(originalBg, expandedBg, progress))
-        else if(holder.binding.joborder?.joborderEmg == 1)
-            holder.binding.cardContainer.setBackgroundColor(blendColors(emergencyBg, expandedBg, progress))
-
-        holder.binding.cardContainer.requestLayout()
-        holder.binding.chevron.rotation = 90 * progress
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Scale Down Animation
-    ///////////////////////////////////////////////////////////////////////////
-
-    private inline val LinearLayoutManager.visibleItemsRange: IntRange
-        get() = findFirstVisibleItemPosition()..findLastVisibleItemPosition()
-
-    fun getScaleDownAnimator(isScaledDown: Boolean): ValueAnimator {
-        val lm = recyclerView.layoutManager as LinearLayoutManager
-
-        val animator = getValueAnimator(isScaledDown,
-            duration = 300L, interpolator = AccelerateDecelerateInterpolator()
-        ) { progress ->
-
-            // Get viewHolder for all visible items and animate attributes
-            for (i in lm.visibleItemsRange) {
-                val holder = recyclerView.findViewHolderForLayoutPosition(i) as MainViewHolder
-                setScaleDownProgress(holder, i, progress)
-            }
-        }
-
-        // Set adapter variable when animation starts so that newly binded views in
-        // onBindViewHolder will respect the new size when they come into the screen
-        animator.doOnStart { this.isScaledDown = isScaledDown }
-
-        // For all the non visible items in the layout manager, notify them to adjust the
-        // view to the new size
-        animator.doOnEnd {
-            repeat(lm.itemCount) { if (it !in lm.visibleItemsRange) notifyItemChanged(it) }
-        }
-        return animator
-    }
-
-
-    private fun setScaleDownProgress(holder: MainViewHolder, position: Int, progress: Float) {
-        val itemExpanded = position >= 0 && joborders[position] == expandedModel
-        holder.binding.cardContainer.layoutParams.apply {
-            width = ((if (itemExpanded) expandedWidth else originalWidth) * (1 - 0.1f * progress)).toInt()
-            height = ((if (itemExpanded) expandedHeight else originalHeight) * (1 - 0.1f * progress)).toInt()
-//            log("width=$width, height=$height [${"%.2f".format(progress)}]")
-        }
-        holder.binding.cardContainer.requestLayout()
-
-        holder.binding.scaleContainer.scaleX = 1 - 0.05f * progress
-        holder.binding.scaleContainer.scaleY = 1 - 0.05f * progress
-
-        holder.binding.scaleContainer.setPadding(
-            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
-            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt(),
-            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
-            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt()
-        )
-
-        holder.binding.listItemFg.alpha = progress
-    }
-
-    private fun scaleDownItem(holder: MainViewHolder, position: Int, isScaleDown: Boolean) {
-        setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
-    }
 }
 ///////////////////////////////////////////////////////////////////////////
 // ViewHolder
 ///////////////////////////////////////////////////////////////////////////
 
 
-class MainViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+class MainViewHolder(val binding: ItemListBinding, itemView: View) : RecyclerView.ViewHolder(binding.root) {
+    val expandView: View by bindView(R.id.expand_view)
+    val chevron: View by bindView(R.id.chevron)
+    val cardContainer: View by bindView(R.id.card_container)
+    val scaleContainer: View by bindView(R.id.scale_container)
+    val listItemFg: View by bindView(R.id.list_item_fg)
+
     fun bind(joborder: Joborder) {
         binding.joborder = joborder
-
         binding.executePendingBindings() //데이터가 수정되면 즉각 바인딩
     }
 }
