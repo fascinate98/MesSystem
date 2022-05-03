@@ -122,7 +122,7 @@ class FiltersMotionLayout @JvmOverloads constructor(context: Context, attrs: Att
 
         // 2) set5_filterCollapse -> set6_filterLoading
         // (Filter adapter items simultaneously)
-        (context as MainActivity).isAdapterFiltered = true
+        //(context as MainActivity).isAdapterFiltered = true
         awaitTransitionComplete(R.id.set6_filterLoading)
 
         // 3) set6_filterLoading -> set7_filterBase
@@ -150,7 +150,7 @@ class FiltersMotionLayout @JvmOverloads constructor(context: Context, attrs: Att
 
         // 2) set8_unfilterInset -> set9_unfilterLoading
         // (Un-filter adapter items simultaneously)
-        (context as MainActivity).isAdapterFiltered = false
+        //(context as MainActivity).isAdapterFiltered = false
         awaitTransitionComplete(R.id.set9_unfilterLoading)
 
         // 3) set9_unfilterLoading -> set10_unfilterOutset

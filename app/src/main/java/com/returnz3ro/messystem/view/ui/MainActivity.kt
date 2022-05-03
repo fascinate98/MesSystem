@@ -54,12 +54,12 @@ class MainActivity: AppCompatActivity() {
 
     private val loadingDuration: Long
         get() = (resources.getInteger(R.integer.loadingAnimDuration)  / animationPlaybackSpeed).toLong()
-
-    var isAdapterFiltered: Boolean
-        get() = adapter.isFiltered
-        set(value) {
-            adapter.isFiltered = value
-        }
+//
+//    var isAdapterFiltered: Boolean
+//        get() = adapter.isFiltered
+//        set(value) {
+//            adapter.isFiltered = value
+//        }
 
 
     @SuppressLint("SetTextI18n")
@@ -69,12 +69,18 @@ class MainActivity: AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Setting viewmodel
+        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
+        binding.lifecycleOwner = this
+
         // Appbar behavior init
         (binding.appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior = ToolbarBehavior()
 
+        // RecyclerView Init
+        setAdapter()
 
         // Init FilterLayout
-        binding.filtersMotionLayout.isVisible = true
+       // binding.filtersMotionLayout.isVisible = true
 
         // get userinfo from data store
         dataStore = DataStoreModule(this)
@@ -84,13 +90,6 @@ class MainActivity: AppCompatActivity() {
                 userName.setText(loginUser.userName)
             }
         }
-
-        // Setting viewmodel
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
-
-
-        // RecyclerView Init
-        setAdapter()
 
         // Nav Drawer Init
         binding.filtersMotionLayout.updateDurations()
@@ -104,12 +103,14 @@ class MainActivity: AppCompatActivity() {
         // set refresh animation
         setPullToRefresh()
 
+
         // check qr recog
         var a = intent.getStringExtra("qrdata")
         if(a != null){
             getQrJoborder(a)
             getSlitterList()
             mainViewModel.recogQrcode(a)
+            mainViewModel.getSlitterList()
         }else{
             getDataList()
             mainViewModel.getAllJoborders()
@@ -134,7 +135,6 @@ class MainActivity: AppCompatActivity() {
         //뒤로 가기 버튼 2번 클릭시 종료
         backPressCloseHandler= BackPressCloseHandler(this)
     }
-
 
 
     //Update RecyclerView Item Animation Durations
@@ -207,8 +207,8 @@ class MainActivity: AppCompatActivity() {
         mainViewModel.getAllJoborders()?.observe(this, Observer { joborderList->
             if(joborderList!=null){
                 adapter.setJoborderList(joborderList)
-                binding.swipeContainer.setRefreshing(false)
-                adapter.notifyDataSetChanged()
+                //binding.swipeContainer.setRefreshing(false)
+                //adapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }
@@ -216,13 +216,13 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun getQrJoborder(joborderid: String){
-        mainViewModel.recogQrcode("C1040_1_450380")?.observe(this, Observer { joborderList->
+        mainViewModel.recogQrcode(joborderid)?.observe(this, Observer { joborderList->
             if(joborderList!=null){
                 Log.d(TAG, joborderList[0].joborderJobname + "            dfsdfsfsdfsfsdfsdf123123123123123123123123123123")
-                //adapter.setFilteredJoborderList(joborderList)
-                adapter.isFiltered = true
-                binding.swipeContainer.setRefreshing(false)
-                adapter.notifyDataSetChanged()
+                adapter.setJoborderList(joborderList)
+
+                //adapter.notifyDataSetChanged()
+                //binding.swipeContainer.setRefreshing(false)
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }
@@ -235,8 +235,8 @@ class MainActivity: AppCompatActivity() {
         mainViewModel.getSlitterList()?.observe(this, Observer { slitterList->
             if(slitterList!=null){
                 adapter.setSlitterList(slitterList)
-                binding.swipeContainer.setRefreshing(false)
-                adapter.notifyDataSetChanged()
+                //binding.swipeContainer.setRefreshing(false)
+                //adapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }

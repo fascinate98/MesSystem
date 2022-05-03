@@ -97,9 +97,6 @@ class RecogQRActivity : AppCompatActivity(){
                 startActivity(mainIntent)
                 finish()
 
-
-
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

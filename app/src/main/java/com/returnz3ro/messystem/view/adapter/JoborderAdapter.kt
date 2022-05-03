@@ -17,6 +17,7 @@ import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,23 +59,9 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     private var originalHeight = -1 // will be calculated dynamically
     private var expandedHeight = -1 // will be calculated dynamically
 
-    // filteredItems is a static field to simulate filtering of random items
-    private var filteredItems =  listOf("417", "416")
     private var joborders = mutableListOf<Joborder>()
     private var slitters = mutableListOf<Slitter>()
-    private var modelListFiltered = mutableListOf<Joborder>()
-    private var joborderlist: MutableList<Joborder> = mutableListOf<Joborder>()
-        get()= if(isFiltered)modelListFiltered else joborders
 
-    var isFiltered = true
-        set(value) {
-            field = value
-            val diff = MainListDiffUtil(
-                if (field) joborders else modelListFiltered,
-                if (field) modelListFiltered else joborders
-            )
-            DiffUtil.calculateDiff(diff).dispatchUpdatesTo(this)
-        }
 
     private val listItemExpandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -89,10 +76,10 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     ///////////////////////////////////////////////////////////////////////////
 
 
-    override fun getItemCount(): Int = joborderlist.size
+    override fun getItemCount(): Int = joborders.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-//        Log.d(TAG, " sdfsdfsdf씨발")
+        Log.d(TAG, " 1")
 //        var a = joborders.filterIndexed { index, joborder ->
 //            joborder.joborderId in filteredItems
 //        }
@@ -102,14 +89,16 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 //        Log.d(TAG, this.modelListFiltered.toString()+ "132323123씨발22")
         //MainViewHolder(inflater.inflate(R.layout.item_list, parent, false))
         val binding = ItemListBinding.inflate(inflater, parent, false)
-        return MainViewHolder(binding, inflater.inflate(R.layout.item_list, parent, false))
+        return MainViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
-        joborderlist = if(isFiltered) modelListFiltered else this.joborders
-        val joborder = joborderlist[position]
-        holder.binding.joborder = joborder
+//        Log.d(TAG, " 2" + this.joborderlist.size.toString())
+//        joborderlist = if(isFiltered) modelListFiltered else this.joborders
+//        Log.d(TAG, " 3" + this.joborderlist.toString())
+        var position = position
+        var joborder = joborders[position]
+        Log.d(TAG, " 4" + joborder.toString())
         holder.bind(joborder)
         onBindViewHodlerInit(holder)
 
@@ -150,7 +139,8 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
             } else {
 
                 // collapse previously expanded view
-                val expandedModelPosition = joborderlist.indexOf(expandedModel!!)
+                val expandedModelPosition = joborders.indexOf(expandedModel!!)
+
                 val oldViewHolder =
                     recyclerView.findViewHolderForAdapterPosition(expandedModelPosition) as? MainViewHolder
                 if (oldViewHolder != null) expandItem(oldViewHolder, expand = false, animate = true)
@@ -160,7 +150,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
                 expandedModel = joborder
             }
         }
-
+        holder.binding.executePendingBindings()
     }
 
     private fun expandItem(holder: MainViewHolder, expand: Boolean, animate: Boolean) {
@@ -260,7 +250,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 
 
     private fun setScaleDownProgress(holder: MainViewHolder, position: Int, progress: Float) {
-        val itemExpanded = position >= 0 && joborderlist[position] == expandedModel
+        val itemExpanded = position >= 0 && joborders[position] == expandedModel
         holder.binding.cardContainer.layoutParams.apply {
             width = ((if (itemExpanded) expandedWidth else originalWidth) * (1 - 0.1f * progress)).toInt()
             height = ((if (itemExpanded) expandedHeight else originalHeight) * (1 - 0.1f * progress)).toInt()
@@ -286,29 +276,44 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     }
 
 
-
     fun setJoborderList(joborders: List<Joborder>){
         this.joborders = joborders.toMutableList()
-        Log.d(TAG, " sdfsdfsdf씨발")
-        var a = joborders.filterIndexed { index, joborder ->
-            joborder.joborderId !in filteredItems
-        }
-        modelListFiltered = a.toMutableList()
-        joborderlist = if(isFiltered) modelListFiltered else this.joborders
-        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
-        Log.d(TAG, this.modelListFiltered.toString()+ "132323123씨발22")
+        notifyDataSetChanged()
+//        Log.d(TAG, " sdfsdfsdf씨발")
+//        var a = joborders.filterNot { joborder ->
+//            joborder.joborderId !in filteredItems
+//        }
+//        Log.d(TAG,  " 으애응애응애애애애애여기야여기" + a.toString())
+//        modelListFiltered = a.toMutableList()
+//        joborderlist = if(isFiltered) modelListFiltered else this.joborders
+//        Log.d(TAG, this.joborderlist.size.toString()+ " sdfsdfsdf씨발")
+//        Log.d(TAG, this.modelListFiltered.size.toString()+ "  132323123씨발22")
 
     }
 
-//    fun setFilteredJoborderList(joborders: List<Joborder>){
+    fun setFilteredJoborderList(joborders: List<Joborder>){
+//        var a : List<String> = listOf()
+//        joborders.forEach {
+//            a.plus(it.joborderId)
+//        }
+//        Log.d(TAG, a.toString()+ " 개씨발")
+//        this.filteredItems = a
+//        var b = joborders.filterNot { joborder ->
+//            joborder.joborderId !in filteredItems
+//        }
+//        modelListFiltered = b.toMutableList()
+//        joborderlist = if(isFiltered) modelListFiltered else this.joborders
+
+
 //        joborders.forEachIndexed{ index, i ->
 //            i.joborderId?.let { this.filteredItems.add(index, i.joborderId!!) }
 //
 //        }
-//    }
+    }
 
     fun setSlitterList(slitters: List<Slitter>){
         this.slitters = slitters.toMutableList()
+        notifyDataSetChanged()
     }
 
     private fun onBindViewHodlerInit(holder: MainViewHolder) {
@@ -402,15 +407,9 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 ///////////////////////////////////////////////////////////////////////////
 
 
-class MainViewHolder(val binding: ItemListBinding, itemView: View) : RecyclerView.ViewHolder(binding.root) {
-    val expandView: View by bindView(R.id.expand_view)
-    val chevron: View by bindView(R.id.chevron)
-    val cardContainer: View by bindView(R.id.card_container)
-    val scaleContainer: View by bindView(R.id.scale_container)
-    val listItemFg: View by bindView(R.id.list_item_fg)
-
-    fun bind(joborder: Joborder) {
+class MainViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root){
+    fun bind(joborder : Joborder){
         binding.joborder = joborder
-        binding.executePendingBindings() //데이터가 수정되면 즉각 바인딩
+
     }
 }
