@@ -47,12 +47,11 @@ too. layout_gravity="center_horizontal" is a lot simpler.
             <RelativeLayout
                 android:id="@+id/scale_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingLeft="@dimen/list_item_horizontal_padding"
                 android:paddingTop="@dimen/list_item_vertical_padding"
                 android:paddingRight="@dimen/list_item_horizontal_padding"
-                android:paddingBottom="@dimen/list_item_vertical_padding"
-                android:transformPivotX="0dp">
+                android:paddingBottom="@dimen/list_item_vertical_padding">
 
                 <ImageView
                     android:id="@+id/chevron"
@@ -205,14 +204,14 @@ too. layout_gravity="center_horizontal" is a lot simpler.
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="70dp"
                         android:orientation="horizontal"
                         android:padding="10dp">
 
                         <com.skydoves.powerspinner.PowerSpinnerView
                             android:id="@+id/spn_slitter"
                             android:layout_width="0dp"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:background="@color/white"
@@ -228,8 +227,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             app:spinner_divider_size="0.4dp"
                             app:spinner_popup_animation="bounce"
                             app:spinner_popup_background="@color/white"
-                            app:spinner_popup_elevation="10dp"
-                            android:visibility="gone"/>
+                            app:spinner_popup_elevation="10dp"/>
 
 
                         <TextView
@@ -237,21 +235,23 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:backgroundTint="@color/zblue"
                             android:layout_weight=".5"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
                             android:layout_gravity="center_vertical"
                             android:text="설비명 : "
                             android:textSize="13sp"
+                            android:visibility="gone"
                             android:fontFamily="@font/nanum_square_round_b"/>
 
                         <TextView
                             android:id="@+id/joborder_slittername"
                             android:backgroundTint="@color/zblue"
                             android:layout_weight=".5"
+                            android:visibility="gone"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:layout_gravity="center_vertical"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:text="@{joborder.slitterName}"
                             android:textSize="13sp"
                             android:fontFamily="@font/nanum_square_round_b"/>
@@ -277,7 +277,7 @@ too. layout_gravity="center_horizontal" is a lot simpler.
                             android:backgroundTint="@color/zblue"
                             android:layout_weight="1"
                             android:layout_width="0dp"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:text="작업완료"
                             android:textSize="13sp"
                             android:fontFamily="@font/nanum_square_round_b"

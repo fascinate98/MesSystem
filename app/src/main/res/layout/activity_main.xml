@@ -86,7 +86,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:clipToPadding="true"
@@ -96,12 +96,6 @@
 
             </com.simform.refresh.SSPullToRefreshLayout>
 
-            <com.returnz3ro.messystem.view.ui.FiltersMotionLayout
-                android:id="@+id/filters_motion_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                app:layoutDescription="@xml/scene_filter" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <include layout="@layout/nav_drawer" />

@@ -80,7 +80,7 @@ class MainActivity: AppCompatActivity() {
         setAdapter()
 
         // Init FilterLayout
-       // binding.filtersMotionLayout.isVisible = true
+        // binding.filtersMotionLayout.isVisible = true
 
         // get userinfo from data store
         dataStore = DataStoreModule(this)
@@ -92,7 +92,7 @@ class MainActivity: AppCompatActivity() {
         }
 
         // Nav Drawer Init
-        binding.filtersMotionLayout.updateDurations()
+        //binding.filtersMotionLayout.updateDurations()
         updateRecyclerViewAnimDuration()
 
         //drawer icon click

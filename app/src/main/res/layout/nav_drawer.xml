@@ -75,7 +75,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/menu_user_bg"
                     app:layout_constraintRight_toRightOf="@id/menu_user_bg"
                     app:layout_constraintBottom_toTopOf="@id/logout"
-                    android:background="@color/zbackgroungray"></View>
+                    android:background="@color/white"></View>
 
 
                 //로그아웃

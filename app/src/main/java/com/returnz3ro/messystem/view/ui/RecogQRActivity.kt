@@ -90,12 +90,13 @@ class RecogQRActivity : AppCompatActivity(){
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
+                Log.d(ContentValues.TAG,   result.contents)
                 var a = result.contents.split('/')
                 Log.d(ContentValues.TAG,   a[a.lastIndex]+ "ddddddddddddddddddddddddddddddd")
                 val mainIntent=Intent(this, MainActivity::class.java)
                 mainIntent.putExtra("qrdata",a[a.lastIndex])
                 startActivity(mainIntent)
-                finish()
+                this.finish()
 
             }
         } else {
