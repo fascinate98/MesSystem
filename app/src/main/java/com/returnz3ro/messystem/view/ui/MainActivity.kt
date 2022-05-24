@@ -31,6 +31,7 @@ import com.returnz3ro.messystem.service.model.datamodel.WorkResult
 import com.returnz3ro.messystem.service.model.datastore.DataStoreModule
 import com.returnz3ro.messystem.utils.bindView
 import com.returnz3ro.messystem.view.adapter.JoborderAdapter
+import com.returnz3ro.messystem.view.adapter.MainViewHolder
 import com.returnz3ro.messystem.viewmodel.MainViewModel
 import com.simform.refresh.SSPullToRefreshLayout
 import kotlinx.coroutines.*
@@ -40,12 +41,15 @@ import okhttp3.internal.wait
 
 var animationPlaybackSpeed: Double = 0.8
 
+
 class MainActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: JoborderAdapter
     private lateinit var mainViewModel: MainViewModel
     private lateinit var dataStore: DataStoreModule
+
+
 
     private val userName: TextView by bindView(R.id.username)
     private val logout: LinearLayout by bindView(R.id.logout)
@@ -167,10 +171,10 @@ class MainActivity: AppCompatActivity() {
                 //updateRecyclerViewAnimDuration()
                 getJoborderList()
 
-                //adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
                 GlobalScope.launch {
 
-                    delay(1000)
+                    delay(500)
                     binding.swipeContainer.setRefreshing(false) // This line stops layout refreshing
 
                     MainScope().launch {
@@ -185,31 +189,36 @@ class MainActivity: AppCompatActivity() {
     private fun setAdapter(){
         adapter = JoborderAdapter(this, object: JoborderAdapter.OnItemClickListener{
             override fun onStartWorkClick(j: Joborder){
-                Log.d(ContentValues.TAG,loginUser.userName.toString() + "    이름")
+
                 var resultdata = WorkResult(loginUser.userId, j.joborderId, j.joborderSlitterNo)
                 mainViewModel.setStartWork(resultdata)
+                mainViewModel.getAllJoborders()?.value?.let { adapter.setJoborderList(it) }
                 getJoborderList()
+                adapter.notifyDataSetChanged()
             }
 
             override fun onFinishWorkClick(j: Joborder) {
                 var resultdata = WorkResult(loginUser.userId, j.joborderId)
                 mainViewModel.setFinishWork(resultdata)
+                mainViewModel.getAllJoborders()?.value?.let { adapter.setJoborderList(it) }
                 getJoborderList()
+                adapter.notifyDataSetChanged()
             }
         })
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.setHasFixedSize(true)
-        updateRecyclerViewAnimDuration()
+        //adapter.notifyDataSetChanged()
     }
 
     private fun getJoborderList(){
         mainViewModel.getAllJoborders()?.observe(this, Observer { joborderList->
             if(joborderList!=null){
                 adapter.setJoborderList(joborderList)
-                //binding.swipeContainer.setRefreshing(false)
-                //adapter.notifyDataSetChanged()
+                mainViewModel.getAllJoborders()?.value?.let { adapter.setJoborderList(it) }
+                adapter.notifyDataSetChanged()
             }else{
+
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }
         })
@@ -218,11 +227,8 @@ class MainActivity: AppCompatActivity() {
     private fun getQrJoborder(joborderid: String){
         mainViewModel.recogQrcode(joborderid)?.observe(this, Observer { joborderList->
             if(joborderList!=null){
-                Log.d(TAG, joborderList[0].joborderJobname + "            dfsdfsfsdfsfsdfsdf123123123123123123123123123123")
                 adapter.setJoborderList(joborderList)
-
-                //adapter.notifyDataSetChanged()
-                //binding.swipeContainer.setRefreshing(false)
+                adapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }
@@ -236,7 +242,8 @@ class MainActivity: AppCompatActivity() {
             if(slitterList!=null){
                 adapter.setSlitterList(slitterList)
                 //binding.swipeContainer.setRefreshing(false)
-                //adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
+
             }else{
                 Toast.makeText(applicationContext, "못가져왓다", Toast.LENGTH_SHORT).show()
             }

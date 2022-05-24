@@ -46,6 +46,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     private val context = context
     private val listener = listener
     private var loginUser: User = User("","","","","")
+    private var userName: String = ""
     private lateinit var dataStore: DataStoreModule
 
     private val originalBg: Int by bindColor(context, R.color.white)
@@ -58,6 +59,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
     private val expandedWidth = context.screenWidth - 24.dp
     private var originalHeight = -1 // will be calculated dynamically
     private var expandedHeight = -1 // will be calculated dynamically
+
 
     private var joborders = mutableListOf<Joborder>()
     private var slitters = mutableListOf<Slitter>()
@@ -80,6 +82,15 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         Log.d(TAG, " 1")
+        dataStore = DataStoreModule(context)
+        CoroutineScope(Dispatchers.Default).launch {
+            dataStore.user.collect{
+                loginUser = it
+                // Log.d(TAG, "이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" + loginUser)
+                userName = loginUser.userName
+            }
+        }
+        Log.d(TAG, "이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" + loginUser)
 //        var a = joborders.filterIndexed { index, joborder ->
 //            joborder.joborderId in filteredItems
 //        }
@@ -89,6 +100,7 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 //        Log.d(TAG, this.modelListFiltered.toString()+ "132323123씨발22")
         //MainViewHolder(inflater.inflate(R.layout.item_list, parent, false))
         val binding = ItemListBinding.inflate(inflater, parent, false)
+
         return MainViewHolder(binding)
     }
 
@@ -96,18 +108,11 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 //        Log.d(TAG, " 2" + this.joborderlist.size.toString())
 //        joborderlist = if(isFiltered) modelListFiltered else this.joborders
 //        Log.d(TAG, " 3" + this.joborderlist.toString())
-        var position = position
-        var joborder = joborders[position]
-        Log.d(TAG, " 4" + joborder.toString())
-        holder.bind(joborder)
+        val joborder = joborders[position]
+        holder.binding.joborder = joborder
         onBindViewHodlerInit(holder)
 
-        dataStore = DataStoreModule(context)
-        CoroutineScope(Dispatchers.Main).launch {
-            dataStore.user.collect{
-                loginUser = it
-            }
-        }
+
         holder.binding.btnWorkstart.setOnClickListener{
             var joborder = holder.binding.joborder
             joborder?.let{
@@ -278,6 +283,8 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 
     fun setJoborderList(joborders: List<Joborder>){
         this.joborders = joborders.toMutableList()
+
+
         notifyDataSetChanged()
 //        Log.d(TAG, " sdfsdfsdf씨발")
 //        var a = joborders.filterNot { joborder ->
@@ -371,9 +378,10 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
             holder.binding.joborderSlitterLabel.visibility = View.VISIBLE
             holder.binding.joborderSlittername.visibility = View.VISIBLE
             holder.binding.spnSlitter.visibility = View.GONE
-
+            Log.d(TAG,holder.binding.joborder?.joborderWorkerName + "앵ㅇ애")
+            Log.d(TAG,loginUser.userName + "앵ㅇ애2222")
             //작업한 사람이 나야
-            if(holder.binding.joborder?.joborderWorkerName == loginUser.userName){
+            if(holder.binding.joborder?.joborderWorkerName.equals(loginUser.userName) ){
                 holder.binding.joborderWorker.visibility = View.GONE
                 holder.binding.joborderWorkerLabel.visibility = View.GONE
                 holder.binding.btnWorkstart.visibility = View.GONE
@@ -410,6 +418,6 @@ class JoborderAdapter(context: Context, listener: OnItemClickListener): Recycler
 class MainViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root){
     fun bind(joborder : Joborder){
         binding.joborder = joborder
-
+        binding.executePendingBindings()
     }
 }

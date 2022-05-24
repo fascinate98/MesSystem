@@ -73,6 +73,7 @@ dependencies {
     implementation "androidx.datastore:datastore-core:1.0.0-alpha07"
     implementation  "com.google.protobuf:protobuf-javalite:3.11.0"
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    implementation 'com.akexorcist:bluetoothspp:1.0.0'
 
 
     compileOnly 'org.projectlombok:lombok:1.18.12'

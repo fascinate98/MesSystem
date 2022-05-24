@@ -16,11 +16,11 @@ import javax.net.ssl.X509TrustManager
 class RetrofitInstance {
     companion object {
 
-        var BASE_URL: String = "http://10.0.2.2:8080/"
+        var BASE_URL: String = "http://http://34.64.240.101/"
         fun getRetrofitInstance(): Retrofit {
 
             return Retrofit.Builder()
-                .baseUrl("http://" + BASE_URL + ":8080/")
+                .baseUrl("http://" + "34.64.240.101" + ":8999/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

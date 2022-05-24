@@ -39,7 +39,6 @@ class LoginActivity : AppCompatActivity(), LoginActivityCallback {
     }
     override fun onLoginClick(view: View) {
         hideKeyboard()
-        RetrofitInstance.BASE_URL = activityLoginBinding?.ip?.text.toString()
         observeLogin(activityLoginBinding?.inputId?.text.toString(), activityLoginBinding?.inputPw?.text.toString())
     }
 

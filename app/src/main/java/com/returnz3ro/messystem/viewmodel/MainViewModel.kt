@@ -2,6 +2,7 @@ package com.returnz3ro.messystem.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.returnz3ro.messystem.service.model.datamodel.Joborder
@@ -15,6 +16,7 @@ import com.returnz3ro.messystem.service.repository.WorkResultRepository
 
 class MainViewModel(val context: Context) : ViewModel() {
 
+    val joborderLiveData = MutableLiveData<List<Joborder>>()
 
     fun getAllJoborders(): LiveData<List<Joborder>>?{
         return JoborderRepository.getInstance(context).getJoborderList()
